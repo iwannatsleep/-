@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.DefaultListModel;
@@ -15,6 +16,8 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import View.Main.MenuItemAction_3;
+import xhr.group8.data.Comment;
+
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -50,15 +53,25 @@ import javax.swing.event.*;
 
 public class Tag extends JFrame {
 
-	private JPanel contentPane, panel, panel_1, panel_2, panel_3, panel_4, panel_5, panel_6;
+	private JPanel contentPane, panel, panel_1, panel_3, panel_4, panel_5, panel_6;
 	private DefaultListModel model;
 	private JList<String> list, list_1, list_2;
 	private JMenu Menu;
 	private JMenuItem MenuItem_1, MenuItem_2, MenuItem_3, MenuItem_4;
 	JTextArea selected;
+	
+	private ArrayList<Comment> comments_list;
+	ArrayList<String> comments=new ArrayList<String>();
+	private int i=0;
+	
 	JScrollPane scrollPane_1, scrollPane_2;
 
 	JFrame frame = new JFrame("第八组数据标记软件");
+	
+	public ArrayList<Comment> getCommentslist() {
+        return comments_list;
+    }
+    public void setCommentslist(ArrayList<Comment> comments_list) {this.comments_list=comments_list;}
 
 	/**
 	 * Create the frame.
@@ -125,7 +138,7 @@ public class Tag extends JFrame {
 		panel_1.setLayout(null);
 		panel.add(panel_1);
 
-		panel_2 = new JPanel();
+		JList panel_2 = new JList();
 		panel_2.setBackground(SystemColor.text);
 		panel_2.setBounds(37, 155, 462, 243);
 		panel.add(panel_2);
@@ -281,7 +294,7 @@ public class Tag extends JFrame {
 		text_3.setBounds(541, 310, 178, 27);
 		text_3.setText(" > 其他");
 		panel.add(text_3);
-
+		
 		/*
 		 * JPanel panel_5 = new JPanel(); panel_5.setBackground(SystemColor.text);
 		 * panel_5.setBounds(541, 337, 178, 61); panel.add(panel_5);
@@ -315,7 +328,21 @@ public class Tag extends JFrame {
 
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		JButton btnNewButton = new JButton("刷新");
+		btnNewButton.setBounds(376, 47, 97, 23);
+		panel.add(btnNewButton);
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				for(i=0;i<comments_list.size();i++) {
+				comments.add(i, comments_list.get(i).getText());
+			}
+				panel_2.setListData(comments.toArray());
+			}
+		});
 	}
+	
+	
 
 	private String getSource(String string) {
 		// TODO Auto-generated method stub
