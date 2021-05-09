@@ -6,6 +6,8 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -14,6 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+
+import xhr.group8.crawler.Crawler;
+
 import javax.swing.JSplitPane;
 
 public class Download extends JFrame {
@@ -47,6 +52,18 @@ public class Download extends JFrame {
 		Button_ok.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//点击确定的响应
+				String symbol=textField.getText();
+				int page=10;
+				Crawler crawler=new Crawler(symbol,page);
+				try {
+					crawler.craw();
+				} catch (IOException e1) {
+					// TODO 自动生成的 catch 块
+					e1.printStackTrace();
+				}
+				ArrayList comments_list=crawler.getCommentslist();
+				Tag a=new Tag();
+				a.setCommentslist(comments_list);
 			}
 		});
 		Button_ok.setBounds(230, 130, 93, 23);
