@@ -29,6 +29,7 @@ def get_comment(data): #Python 使用def 开始函数定义，紧接着是函数
         #timeBefore = temp_data['timeBefore']
         if len(text) > 0:
             text = text.replace('&nbsp;', '')#去除&nbsp
+            text = text.replace('/t', '')  # 5.10去除/t，防止与读取评论类文件时与分隔符/t混淆
         if len(text) != 0:
             data_list.append([text])
         #print(text , timeBefore)
