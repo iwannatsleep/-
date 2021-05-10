@@ -18,6 +18,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import xhr.group8.crawler.Crawler;
+import xhr.group8.data.Comment;
+import xhr.group8.databank.CommentsDatabank;
 
 import javax.swing.JSplitPane;
 
@@ -54,7 +56,7 @@ public class Download extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				//点击确定的响应
 				String symbol=textField.getText();
-				int page=10;
+				int page=30;
 				crawler=new Crawler(symbol,page);
 				try {
 					crawler.craw();
@@ -62,7 +64,15 @@ public class Download extends JFrame {
 					// TODO 自动生成的 catch 块
 					e1.printStackTrace();
 				}
-				ArrayList comments_list=crawler.getCommentslist();
+				CommentsDatabank comments_databank=new CommentsDatabank();
+				ArrayList<Comment> comments_list=crawler.getCommentslist();
+				comments_databank.setCommentslist(comments_list);
+				try {
+					comments_databank.saveComments(comments_list);
+				} catch (IOException e1) {
+					// TODO 自动生成的 catch 块
+					e1.printStackTrace();
+				}
 				Tag a=new Tag();
 				a.setCommentslist(comments_list);
 			}
