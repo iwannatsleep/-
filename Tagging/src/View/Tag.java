@@ -56,6 +56,7 @@ public class Tag extends JFrame {
 	private JPanel contentPane, panel, panel_1, panel_3, panel_4, panel_5, panel_6;
 	private DefaultListModel model;
 	private JList<String> list, list_1, list_2;
+	//JScrollPane jsp;
 	private JMenu Menu;
 	private JMenuItem MenuItem_1, MenuItem_2, MenuItem_3, MenuItem_4;
 	JTextArea selected;
@@ -138,10 +139,12 @@ public class Tag extends JFrame {
 		panel_1.setLayout(null);
 		panel.add(panel_1);
 
-		JList panel_2 = new JList();
-		panel_2.setBackground(SystemColor.text);
-		panel_2.setBounds(37, 155, 462, 243);
-		panel.add(panel_2);
+		JList list_test = new JList();
+		list_test.setBackground(SystemColor.text);
+		list_test.setBounds(37, 155, 462, 243);
+		panel.add(list_test);
+		//JList panel_2=new JList();
+		
 
 		JTextPane txtname = new JTextPane();
 		txtname.setBackground(SystemColor.inactiveCaptionBorder);
@@ -332,12 +335,20 @@ public class Tag extends JFrame {
 		JButton btnNewButton = new JButton("Ë¢ÐÂ");
 		btnNewButton.setBounds(376, 47, 97, 23);
 		panel.add(btnNewButton);
+		
+		JPanel panel_7 = new JPanel();
+		panel_7.setBounds(0, 0, 10, 10);
+		panel.add(panel_7);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				for(i=0;i<comments_list.size();i++) {
 				comments.add(i, comments_list.get(i).getText());
 			}
-				panel_2.setListData(comments.toArray());
+				list_test.setListData(comments.toArray());
+				JScrollPane jsp=new JScrollPane(list_test);
+			    jsp.setBounds(37, 155, 462, 243);
+			    panel.add(jsp);
+			    panel.setLayout(null);
 			}
 		});
 	}

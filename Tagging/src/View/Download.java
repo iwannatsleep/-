@@ -25,6 +25,7 @@ public class Download extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
+	public Crawler crawler;
 	JFrame frame=new JFrame("下载股票");
 
 	/**
@@ -54,7 +55,7 @@ public class Download extends JFrame {
 				//点击确定的响应
 				String symbol=textField.getText();
 				int page=10;
-				Crawler crawler=new Crawler(symbol,page);
+				crawler=new Crawler(symbol,page);
 				try {
 					crawler.craw();
 				} catch (IOException e1) {
