@@ -53,19 +53,21 @@ import javax.swing.event.*;
 
 public class Tag extends JFrame {
 
-	private JPanel contentPane, panel, panel_1, panel_3, panel_4, panel_5, panel_6;
+	private JPanel contentPane, panel, panel_1, panel_2, panel_3, panel_4, panel_5, panel_6;
 	private DefaultListModel model;
-	private JList<String> list, list_1, list_2;
+	private JList list, list_1, list_2;
 	//JScrollPane jsp;
 	private JMenu Menu;
 	private JMenuItem MenuItem_1, MenuItem_2, MenuItem_3, MenuItem_4;
 	JTextArea selected;
+	JScrollPane scrollPane_1, scrollPane_2;
+	public static JPanel panel_tag, panel_chart;
 	
 	private ArrayList<Comment> comments_list;
 	ArrayList<String> comments=new ArrayList<String>();
 	private int i=0;
 	
-	JScrollPane scrollPane_1, scrollPane_2;
+	
 
 	JFrame frame = new JFrame("第八组数据标记软件");
 	
@@ -133,36 +135,45 @@ public class Tag extends JFrame {
 		// 为MenuItem_4添加事件监听器
 		MenuItem_4.addActionListener(new MenuItemAction_4());
 
-		panel_1 = new JPanel();
-		panel_1.setBackground(SystemColor.text);
-		panel_1.setBounds(37, 94, 462, 51);
-		panel_1.setLayout(null);
-		panel.add(panel_1);
-
-		JList list_test = new JList();
-		list_test.setBackground(SystemColor.text);
-		list_test.setBounds(37, 155, 462, 243);
-		panel.add(list_test);
-		//JList panel_2=new JList();
-		
-
 		JTextPane txtname = new JTextPane();
 		txtname.setBackground(SystemColor.inactiveCaptionBorder);
 		txtname.setText("贵州茅台SH:600519\r");
 		txtname.setBounds(37, 47, 137, 27);
 		panel.add(txtname);
 
+		panel_tag = new JPanel();
+		panel_tag.setBounds(10, 76, 736, 354);
+		panel.add(panel_tag);
+		panel_tag.setLayout(null);
+		
+		panel_1 = new JPanel();
+		panel_1.setBackground(SystemColor.text);
+		panel_1.setBounds(26, 20, 462, 51);
+		panel_1.setLayout(null);
+		panel_tag.add(panel_1);
+
+		JList list_test = new JList();
+		list_test.setBackground(SystemColor.text);
+		//list_test.setBounds(26, 89, 462, 243);
+		panel.add(list_test);
+		//JList panel_2=new JList();
+		
+		panel_2 = new JPanel();
+		panel_2.setBackground(SystemColor.text);
+		panel_2.setBounds(26, 89, 462, 243);
+		panel_tag.add(panel_2);
+		
 		// 第一类标签区
 		JTextPane text_1 = new JTextPane();
 		text_1.setBackground(SystemColor.inactiveCaptionBorder);
-		text_1.setBounds(541, 94, 178, 27);
+		text_1.setBounds(527, 20, 178, 27);
 		text_1.setText(" > 对股票的看法");
-		panel.add(text_1);
+		panel_tag.add(text_1);
 
 		panel_3 = new JPanel();
 		panel_3.setBackground(SystemColor.text);
-		panel_3.setBounds(541, 121, 178, 90);
-		panel.add(panel_3);
+		panel_3.setBounds(527, 47, 178, 90);
+		panel_tag.add(panel_3);
 		panel_3.setLayout(null);
 
 		scrollPane_1 = new JScrollPane();
@@ -170,9 +181,17 @@ public class Tag extends JFrame {
 		panel_3.add(scrollPane_1);
 
 		String[] element = { "看跌", "看涨", "无关", "表达", "分析", "最新" };
+
 		DefaultListModel model_1 = new DefaultListModel();
+		ArrayList<String> alist1 = new ArrayList<String>();
+		alist1.add("看跌");
+		alist1.add("看涨");
+		alist1.add("无关");
+		alist1.add("表达");
+		alist1.add("分析");
+		alist1.add("最新");
 		list_1 = new JList(model_1);
-		list_1.setListData(element);
+		list_1.setListData(alist1.toArray());
 		scrollPane_1.setViewportView(list_1);
 
 		// 选择标签进行标注
@@ -197,12 +216,23 @@ public class Tag extends JFrame {
 				if (SwingUtilities.isRightMouseButton(evt)) {
 					// 处理右键点击
 					if (selectedindex != -1) {
-						// JOptionPane.showMessageDialog(null, "普通对话框");
-						int n = JOptionPane.showConfirmDialog(null, "是否要删除此标签？", "删除确认", JOptionPane.YES_NO_OPTION);
+						Object[] options = { "删除", "修改" }; // 自定义按钮上的文字
+						int n = JOptionPane.showOptionDialog(null, "选择需要进行的操作", "选择操作", JOptionPane.YES_NO_OPTION,
+								JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 						if (n == JOptionPane.YES_OPTION) {
-							JOptionPane.showMessageDialog(null, "删除");
+							// 删除标签
+							alist1.remove(selectedindex);
+							list_1.setListData(alist1.toArray());
 						} else if (n == JOptionPane.NO_OPTION) {
-							// 什么都不用做
+							// 修改标签
+							String edit = JOptionPane.showInputDialog(null, " 修改为：\n", "修改标签",
+									JOptionPane.PLAIN_MESSAGE);
+							if (edit == null)
+								return;
+							else {
+								alist1.set(selectedindex, edit);
+								list_1.setListData(alist1.toArray());
+							}
 						}
 					}
 				}
@@ -221,21 +251,26 @@ public class Tag extends JFrame {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new AddTag();
+				String append = JOptionPane.showInputDialog(null, " 请输入要添加的标签：\n", "添加标签",
+						JOptionPane.PLAIN_MESSAGE);
+				if (append != null) {
+					alist1.add(append);
+					list_1.setListData(alist1.toArray());
+				}
 			}
 		});
 
 		// 第二类标签区
 		JTextPane text_2 = new JTextPane();
 		text_2.setBackground(SystemColor.inactiveCaptionBorder);
-		text_2.setBounds(541, 211, 178, 27);
+		text_2.setBounds(527, 136, 178, 27);
 		text_2.setText(" > 表达观点或分析数据");
-		panel.add(text_2);
+		panel_tag.add(text_2);
 
 		panel_4 = new JPanel();
 		panel_4.setBackground(SystemColor.text);
-		panel_4.setBounds(541, 238, 178, 72);
-		panel.add(panel_4);
+		panel_4.setBounds(527, 163, 178, 72);
+		panel_tag.add(panel_4);
 		panel_4.setLayout(null);
 
 		scrollPane_2 = new JScrollPane();
@@ -243,13 +278,19 @@ public class Tag extends JFrame {
 		panel_4.add(scrollPane_2);
 
 		DefaultListModel model_2 = new DefaultListModel();
-		list_2 = new JList(model_2);
-		list_2.setListData(element);
+		ArrayList<String> alist2 = new ArrayList<String>();
+		alist2.add("看跌");
+		alist2.add("看涨");
+		alist2.add("无关");
+		alist2.add("表达");
+		alist2.add("分析");
+		alist2.add("最新");
+		list_2 = new JList(model_1);
+		list_2.setListData(alist2.toArray());
 		scrollPane_2.setViewportView(list_2);
 
 		// 选择标签进行标注
 		list_2.addListSelectionListener(new ListSelectionListener() {
-
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				// TODO Auto-generated method stub
@@ -269,12 +310,23 @@ public class Tag extends JFrame {
 				if (SwingUtilities.isRightMouseButton(evt)) {
 					// 处理右键点击
 					if (selectedindex != -1) {
-						// JOptionPane.showMessageDialog(null, "普通对话框");
-						int n = JOptionPane.showConfirmDialog(null, "是否要删除此标签？", "删除确认", JOptionPane.YES_NO_OPTION);
+						Object[] options = { "删除", "修改" }; // 自定义按钮上的文字
+						int n = JOptionPane.showOptionDialog(null, "选择需要进行的操作", "选择操作", JOptionPane.YES_NO_OPTION,
+								JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 						if (n == JOptionPane.YES_OPTION) {
-							JOptionPane.showMessageDialog(null, "删除");
+							// 删除标签
+							alist2.remove(selectedindex);
+							list_2.setListData(alist2.toArray());
 						} else if (n == JOptionPane.NO_OPTION) {
-							// 什么都不用做
+							// 修改标签
+							String edit = JOptionPane.showInputDialog(null, " 修改为：\n", "修改标签",
+									JOptionPane.PLAIN_MESSAGE);
+							if (edit == null)
+								return;
+							else {
+								alist2.set(selectedindex, edit);
+								list_2.setListData(alist2.toArray());
+							}
 						}
 					}
 				}
@@ -287,37 +339,26 @@ public class Tag extends JFrame {
 		addtag_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new AddTag();
+				String append = JOptionPane.showInputDialog(null, " 请输入要添加的标签：\n", "添加标签",
+						JOptionPane.PLAIN_MESSAGE);
+				if (append != null) {
+					alist2.add(append);
+					list_2.setListData(alist2.toArray());
+				}
 			}
 		});
 
 		// 第三类标签区
 		JTextPane text_3 = new JTextPane();
 		text_3.setBackground(SystemColor.inactiveCaptionBorder);
-		text_3.setBounds(541, 310, 178, 27);
+		text_3.setBounds(527, 234, 178, 27);
 		text_3.setText(" > 其他");
-		panel.add(text_3);
-		
-		/*
-		 * JPanel panel_5 = new JPanel(); panel_5.setBackground(SystemColor.text);
-		 * panel_5.setBounds(541, 337, 178, 61); panel.add(panel_5);
-		 * panel_5.setLayout(null);
-		 * 
-		 * JScrollPane scrollPane_3 = new JScrollPane(); scrollPane_3.setBounds(0, 0,
-		 * 180, 34); panel_5.add(scrollPane_3);
-		 * 
-		 * JList list_3 = new JList(element); scrollPane_3.setViewportView(list_3);
-		 * 
-		 * JLabel addtag_3 = new JLabel(addIcon); panel_5.add(addtag_3);
-		 * addtag_3.setBounds(0, 33, 30, 30); addtag_3.addMouseListener(new
-		 * MouseAdapter() {
-		 * 
-		 * @Override public void mouseClicked(MouseEvent e) { new AddTag(); } });
-		 */
+		panel_tag.add(text_3);
+
 		panel_6 = new JPanel();
 		panel_6.setBackground(SystemColor.inactiveCaptionBorder);
-		panel_6.setBounds(541, 337, 178, 30);
-		panel.add(panel_6);
+		panel_6.setBounds(527, 261, 178, 30);
+		panel_tag.add(panel_6);
 		panel_6.setLayout(null);
 		JLabel addclass = new JLabel(addIcon);
 		panel_6.add(addclass);
@@ -335,10 +376,7 @@ public class Tag extends JFrame {
 		JButton btnNewButton = new JButton("刷新");
 		btnNewButton.setBounds(376, 47, 97, 23);
 		panel.add(btnNewButton);
-		
-		JPanel panel_7 = new JPanel();
-		panel_7.setBounds(0, 0, 10, 10);
-		panel.add(panel_7);
+
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				for(i=0;i<comments_list.size();i++) {
@@ -346,7 +384,7 @@ public class Tag extends JFrame {
 			}
 				list_test.setListData(comments.toArray());
 				JScrollPane jsp=new JScrollPane(list_test);
-			    jsp.setBounds(37, 155, 462, 243);
+			    jsp.setBounds(37, 155, 463, 255);
 			    panel.add(jsp);
 			    panel.setLayout(null);
 			}

@@ -45,8 +45,8 @@ public class Crawler {
         try {
         	//执行爬虫py文件进行爬取，爬取后的结果放在data_test_plus.csv
             proc = Runtime.getRuntime().exec(python_code);
-            //Thread.currentThread();
-			//Thread.sleep(3000);
+            Thread.currentThread();
+			Thread.sleep(10000);
             //java从文件中读取评论
             BufferedReader reader = new BufferedReader(new FileReader(filename));
             String line;
