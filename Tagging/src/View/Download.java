@@ -74,7 +74,6 @@ public class Download extends JFrame {
 					e1.printStackTrace();
 				}
 				Tag a=new Tag();
-				a.setCommentslist(comments_list);
 			}
 		});
 		Button_ok.setBounds(230, 130, 93, 23);

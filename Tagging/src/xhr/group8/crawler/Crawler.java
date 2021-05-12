@@ -45,23 +45,23 @@ public class Crawler {
         try {
         	//执行爬虫py文件进行爬取，爬取后的结果放在data_test_plus.csv
             proc = Runtime.getRuntime().exec(python_code);
-            Thread.currentThread();
-			Thread.sleep(10000);
-            //java从文件中读取评论
-            BufferedReader reader = new BufferedReader(new FileReader(filename));
-            String line;
-            line = reader.readLine();//从第二行评论开始读（第一行是0）
-            while ((line = reader.readLine()) != null) {   
-            	comments_list.add(position_comment,new Comment(i,line,symbol)); //暂时输出到控制台，等comment数据类做好后直接传到list中 
-            	i++;
-            	position_comment++;
-            }
-            reader.close();
             proc.waitFor();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } 
+        //Thread.currentThread();
+		//Thread.sleep(10000);
+        //java从文件中读取评论
+        BufferedReader reader = new BufferedReader(new FileReader(filename));
+        String line;
+        line = reader.readLine();//从第二行评论开始读（第一行是0）
+        while ((line = reader.readLine()) != null) {   
+        	comments_list.add(position_comment,new Comment(i,line,symbol)); //暂时输出到控制台，等comment数据类做好后直接传到list中 
+        	i++;
+        	position_comment++;
+        }
+        reader.close();
     }
 }
