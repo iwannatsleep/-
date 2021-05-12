@@ -63,8 +63,14 @@ public class SelectDoc implements ActionListener{
 					// TODO 自动生成的 catch 块
 					e1.printStackTrace();
 				}
+        		try {
+					commentsdatabank.saveComments(comments_list);
+				} catch (IOException e1) {
+					// TODO 自动生成的 catch 块
+					e1.printStackTrace();
+				};
         		Tag a=new Tag();
-				a.setCommentslist(comments_list);
+
         	}
         });
         frame.setVisible(true);//窗口可见

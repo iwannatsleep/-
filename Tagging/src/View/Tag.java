@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.DefaultListModel;
@@ -17,6 +18,8 @@ import javax.swing.border.EmptyBorder;
 
 import View.Main.MenuItemAction_3;
 import xhr.group8.data.Comment;
+import xhr.group8.databank.CommentsDatabank;
+import zzx.group8.data.Tags;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -45,6 +48,7 @@ import javax.swing.JScrollBar;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -56,7 +60,6 @@ public class Tag extends JFrame {
 	private JPanel contentPane, panel, panel_1, panel_2, panel_3, panel_4, panel_5, panel_6;
 	private DefaultListModel model;
 	private JList list, list_1, list_2;
-	//JScrollPane jsp;
 	private JMenu Menu;
 	private JMenuItem MenuItem_1, MenuItem_2, MenuItem_3, MenuItem_4;
 	JTextArea selected;
@@ -66,8 +69,9 @@ public class Tag extends JFrame {
 	private ArrayList<Comment> comments_list;
 	ArrayList<String> comments=new ArrayList<String>();
 	private int i=0;
+	private CommentsDatabank commentsdatabank=new CommentsDatabank();
 	
-	
+	private ArrayList<Tags> tags =new ArrayList<Tags>();
 
 	JFrame frame = new JFrame("第八组数据标记软件");
 	
@@ -125,6 +129,25 @@ public class Tag extends JFrame {
 		panel.setBackground(SystemColor.control);
 		panel.setLayout(null);
 		contentPane.add(panel, BorderLayout.CENTER);
+		
+		JList list_test = new JList();
+		list_test.setBackground(SystemColor.text);
+		panel.add(list_test);
+		try {
+			comments_list=commentsdatabank.readComments("Comment.data");
+		} catch (IOException e1) {
+			// TODO 自动生成的 catch 块
+			e1.printStackTrace();
+		}
+		for(i=0;i<comments_list.size();i++) {
+			comments.add(i, comments_list.get(i).getText());
+		}
+		list_test.setListData(comments.toArray());
+		JScrollPane jsp=new JScrollPane(list_test);
+		jsp.setBounds(37, 155, 463, 255);
+		panel.add(jsp);
+		panel.setLayout(null);
+		
 		MenuItem_3 = new JMenuItem("\u8BC4\u8BBA\u6807\u6CE8");
 		panel.add(MenuItem_3);
 		MenuItem_3.setBounds(172, 10, 115, 27);
@@ -152,16 +175,12 @@ public class Tag extends JFrame {
 		panel_1.setLayout(null);
 		panel_tag.add(panel_1);
 
-		JList list_test = new JList();
-		list_test.setBackground(SystemColor.text);
-		//list_test.setBounds(26, 89, 462, 243);
-		panel.add(list_test);
-		//JList panel_2=new JList();
 		
-		panel_2 = new JPanel();
+		
+		/*panel_2 = new JPanel();
 		panel_2.setBackground(SystemColor.text);
 		panel_2.setBounds(26, 89, 462, 243);
-		panel_tag.add(panel_2);
+		panel_tag.add(panel_2);*/
 		
 		// 第一类标签区
 		JTextPane text_1 = new JTextPane();
@@ -180,9 +199,11 @@ public class Tag extends JFrame {
 		scrollPane_1.setBounds(0, 0, 180, 60);
 		panel_3.add(scrollPane_1);
 
-		String[] element = { "看跌", "看涨", "无关", "表达", "分析", "最新" };
+		//String[] element = { "看跌", "看涨", "无关", "表达", "分析", "最新" };
 
 		DefaultListModel model_1 = new DefaultListModel();
+		//tags.add(0,new Tags("对股票的看法","看跌",new List()));
+		
 		ArrayList<String> alist1 = new ArrayList<String>();
 		alist1.add("看跌");
 		alist1.add("看涨");
@@ -373,22 +394,6 @@ public class Tag extends JFrame {
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JButton btnNewButton = new JButton("刷新");
-		btnNewButton.setBounds(376, 47, 97, 23);
-		panel.add(btnNewButton);
-
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				for(i=0;i<comments_list.size();i++) {
-				comments.add(i, comments_list.get(i).getText());
-			}
-				list_test.setListData(comments.toArray());
-				JScrollPane jsp=new JScrollPane(list_test);
-			    jsp.setBounds(37, 155, 463, 255);
-			    panel.add(jsp);
-			    panel.setLayout(null);
-			}
-		});
 	}
 	
 	
