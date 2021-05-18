@@ -70,4 +70,4 @@ for i in range(1,int(page)):
     get_comment(temp)
 
 data_csv = pd.DataFrame(data_list)
-data_csv.to_csv("./data_comments.csv", encoding="gbk", index=False)
+data_csv.to_csv("./data_comments.csv", encoding="utf-8", index=False)

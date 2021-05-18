@@ -59,7 +59,7 @@ public class Download extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				//点击确定的响应
 				String symbol=textField.getText();
-				int page=30;
+				int page=10;
 				crawler=new Crawler(symbol,page);
 				try {
 					crawler.craw();
@@ -109,6 +109,10 @@ public class Download extends JFrame {
 		});
 		Button_cancel.setBounds(90, 130, 93, 23);
 		contentPane.add(Button_cancel, BorderLayout.SOUTH);
+		
+		JLabel lblNewLabel_1 = new JLabel("输入格式，如：SH600519");
+		lblNewLabel_1.setBounds(100, 95, 180, 21);
+		contentPane.add(lblNewLabel_1);
 		
 		frame.setVisible(true);//窗口可见
 	}
