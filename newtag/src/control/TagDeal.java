@@ -185,7 +185,7 @@ public class TagDeal {
     	return taged;
     } 
     
-  //获取某一标签类的所有标签
+  //获取某一标签类的所有标签(xinhanrui)
     public static ArrayList<String> getAllTagString(ArrayList<Tag> tags,String tagclass) {
     	ArrayList<String> tagnames= new ArrayList<String>();
     	for(Tag tag : tags) {
@@ -193,14 +193,10 @@ public class TagDeal {
     			tagnames.add(tag.getTagName());
     		}
     	}
-    	/*
-    	for(String tagn:tagnames)
-    		System.out.printf(tagn);
-    		*/
 		return tagnames;
     }
     
-	//删除所有被此评论标注的ID
+	//测试删除所有标签列表中指定ID(xinhanrui)
     public static void delAllID(ArrayList<Tag> tags,int ID) throws IOException{
         for (Tag tag : tags) {   
         	if(tag.haveID(ID)) {
@@ -210,7 +206,7 @@ public class TagDeal {
         saveTags(tags);
     }
     
-  //返回该评论是否被标签标注
+  //返回该评论是否被标签标注(xinhanrui)
     public static int IsIDempty(ArrayList<Tag> tags,int ID){
         int isempty=1;
     	for (Tag tag : tags) {   
@@ -221,7 +217,7 @@ public class TagDeal {
         return isempty;
     }
     
-    //获取所有标签类与其标签的字符串列表
+    //获取所有标签类与其标签的字符串列表(xinhanrui)
     public static ArrayList<String> getAllTagandClass(ArrayList<Tag> tags) {
     	ArrayList<String> alltagclass,alltag;
     	ArrayList<String> tagandclass= new ArrayList<String>();
@@ -235,7 +231,7 @@ public class TagDeal {
 		return tagandclass;
     }
     
-    //返回指定的ID的arraylist列表
+    //返回指定的ID的arraylist列表(xinhanrui)
     public static ArrayList getTagIDs(ArrayList<Tag> tags,String tagclass,String tagname) {
     	ArrayList tagIDs=new ArrayList();
     	for(Tag tag : tags) {

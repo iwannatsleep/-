@@ -13,7 +13,8 @@ public class SelectDoc implements ActionListener{
     JFrame frame=new JFrame("选择文件");
     JTabbedPane tabPane=new JTabbedPane();//选项卡布局
     Container con=new Container();//布局1
-    JLabel label2=new JLabel("选择文件");
+    JLabel label2=new JLabel("选择Comment");
+    JLabel label3=new JLabel("选择Tag");
     JTextField text2=new JTextField();
     JTextField text3=new JTextField();
     JButton button2=new JButton("...");
@@ -36,6 +37,7 @@ public class SelectDoc implements ActionListener{
         frame.setBounds(150, 150, 430, 220);//设定窗口大小位置
         frame.setContentPane(tabPane);
         label2.setBounds(10,38,100,20);
+        label3.setBounds(10, 92, 100, 20);
         text2.setBounds(101,38,120,20);
         text2.setText("Comment.data");
         text3.setBounds(101, 92, 120, 20);
@@ -47,6 +49,7 @@ public class SelectDoc implements ActionListener{
         button3.addActionListener(this);//添加事件处理
         con.setBackground(Color.WHITE);
         con.add(label2);
+        con.add(label3);
         con.add(text2);
         con.add(text3);
         con.add(button2);
@@ -55,6 +58,7 @@ public class SelectDoc implements ActionListener{
         con.add(jfc);
         con.add(jfc1);
         tabPane.add("目录/文件选择",con);
+        
         btnOKButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		try {

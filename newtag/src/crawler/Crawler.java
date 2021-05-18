@@ -1,8 +1,10 @@
 package crawler;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +56,9 @@ public class Crawler {
         //Thread.currentThread();
 		//Thread.sleep(10000);
         //java从文件中读取评论
-        BufferedReader reader = new BufferedReader(new FileReader(filename));
+        FileInputStream fis = new FileInputStream(filename);
+        InputStreamReader isr = new InputStreamReader(fis, "UTF-8");   
+        BufferedReader reader = new BufferedReader(isr);
         String line;
         line = reader.readLine();//从第二行评论开始读（第一行是0）
         while ((line = reader.readLine()) != null) {   
