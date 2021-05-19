@@ -70,7 +70,8 @@ public class MainView extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// 调用文件选择函数
-				new SelectDoc();   
+				new SelectDoc();
+				frame.dispose();
 			}
 		});
 		
@@ -81,7 +82,8 @@ public class MainView extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// 调用下载函数
-				new Download();   
+				new Download();
+				frame.dispose();
 			}
 		});
 		

@@ -57,7 +57,7 @@ public class TagView extends  JPanel{;
 		selectedID=-1;
 ////////¶ÁÈëÊı¾İ
 		comments_list=commentsdatabank.readComments("Comment.data");
-		tags=TagDeal.readTags();
+		tags=TagDeal.readTags("Tag.txt");
 		if(tags.get(0).haveID(1)) {
 			String temp=tags.get(0).getTagClass()+"."+tags.get(0).getTagName();
 		}

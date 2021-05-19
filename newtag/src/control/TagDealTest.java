@@ -91,6 +91,7 @@ public class TagDealTest {
 	}
 
 	@Test
+	//返回指定的ID的评论的arraylist列表测试
 	public void testGetTagIDs() {
 		ArrayList<Tag> data=new ArrayList<Tag>();
 		TagDeal method=new TagDeal();

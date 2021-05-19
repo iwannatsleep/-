@@ -59,43 +59,13 @@ public class Download extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				//点击确定的响应
 				String symbol=textField.getText();
-				int page=10;
-				crawler=new Crawler(symbol,page);
-				try {
-					crawler.craw();
-				} catch (IOException e1) {
-					// TODO 自动生成的 catch 块
-					e1.printStackTrace();
-				}
-				CommentsDatabank comments_databank=new CommentsDatabank();
-				ArrayList<Comment> comments_list=crawler.getCommentslist();
-				comments_databank.setCommentslist(comments_list);
-				try {
-					comments_databank.saveComments(comments_list);
-				} catch (IOException e1) {
-					// TODO 自动生成的 catch 块
-					e1.printStackTrace();
-				}
-				TagDeal tagdeal=new TagDeal();
-				ArrayList<Tag> tags_list=new ArrayList<Tag>();
-				ArrayList a=new ArrayList();a.add(0);
-				tags_list.add(new Tag("认为涨跌","看涨",a));
-				tags_list.add(new Tag("认为涨跌","看跌",a));
-				tags_list.add(new Tag("认为涨跌","中立",a));
-				tags_list.add(new Tag("是否广告","是",a));
-				tags_list.add(new Tag("是否广告","否",a));
-				try {
-					TagDeal.saveTags(tags_list);
-				} catch (IOException e2) {
-					// TODO 自动生成的 catch 块
-					e2.printStackTrace();
-				}
-				try {
-					new MainView();
-				} catch (IOException e1) {
-					// TODO 自动生成的 catch 块
-					e1.printStackTrace();
-				}
+				if(IsInputRight(symbol)) {
+					Downloading test=new Downloading();
+					test.setSymbol(symbol);
+					frame.dispose();
+					}
+				else textField.setText("输入有误，请重新输入！");
+
 			}
 		});
 		Button_ok.setBounds(230, 130, 93, 23);
@@ -104,6 +74,7 @@ public class Download extends JFrame {
 		JButton Button_cancel = new JButton("取消");
 		Button_cancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				frame.dispose();
 			}
 		});
@@ -120,6 +91,33 @@ public class Download extends JFrame {
 	/**
 	 * Launch the application.
 	 */
+	
+	private boolean IsInputRight(String symbol) {
+		
+		String[] falseStr=new String[] {":",";","\"","'",",",".","/","<",">","?","[","]","{","}","\\","|","-","=","+","_"};
+		boolean state1=symbol.contains("SH");
+		boolean state2=symbol.contains("SZ");
+		boolean state3=symbol.contains("HK");
+		boolean state4=true;
+		for(int i=0;i<falseStr.length;i++) {
+			if(symbol.contains(falseStr[i])) {
+				state4=false;
+				break;
+			}
+		}
+		int length=symbol.length();
+		if((state1 || state2 || state3) && state4 && (length==8 || length==7)) {return true;}
+		return false;
+	}
+	
+	public boolean isChineseByScript(char c) {
+        Character.UnicodeScript sc = Character.UnicodeScript.of(c);
+        if (sc == Character.UnicodeScript.HAN) {
+            return true;
+        }
+        return false;
+    }
+	
 	public static void main(String[] args) {
 		new Download();
 	}

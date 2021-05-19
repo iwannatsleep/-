@@ -6,7 +6,9 @@ import java.awt.*;
 import javax.swing.*;
 
 import data.Comment;
+import data.Tag;
 import control.CommentsDatabank;
+import control.TagDeal;
 
 import java.awt.event.*;
 public class SelectDoc implements ActionListener{
@@ -24,6 +26,8 @@ public class SelectDoc implements ActionListener{
     JFileChooser jfc1=new JFileChooser();//文件选择器
     CommentsDatabank commentsdatabank=new CommentsDatabank();
     ArrayList<Comment> comments_list=new ArrayList<Comment>();
+    TagDeal tagdeal=new TagDeal();
+    ArrayList<Tag> tags_list=new ArrayList<Tag>();
     SelectDoc(){
         jfc.setCurrentDirectory(new File("."));//文件选择器的初始目录定为d盘
         jfc1.setCurrentDirectory(new File("."));//文件选择器的初始目录定为d盘
@@ -74,11 +78,24 @@ public class SelectDoc implements ActionListener{
 					e1.printStackTrace();
 				};
 				try {
+					tags_list=tagdeal.readTags(text3.getText());
+				} catch (IOException e2) {
+					// TODO 自动生成的 catch 块
+					e2.printStackTrace();
+				}
+				try {
+					tagdeal.saveTags(tags_list);
+				} catch (IOException e2) {
+					// TODO 自动生成的 catch 块
+					e2.printStackTrace();
+				}
+				try {
 					new MainView();
 				} catch (IOException e1) {
 					// TODO 自动生成的 catch 块
 					e1.printStackTrace();
 				}
+				frame.dispose();
         	}
         });
         frame.setVisible(true);//窗口可见

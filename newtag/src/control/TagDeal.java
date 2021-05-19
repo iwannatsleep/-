@@ -43,7 +43,7 @@ public class TagDeal {
     }   
     
     // 从文件中读取 Tag 对象   
-    public static  ArrayList<Tag> readTags() throws IOException {   
+    public static  ArrayList<Tag> readTags(String filename) throws IOException {   
     	 ArrayList<Tag> result = new ArrayList<Tag>();   
     
         BufferedReader reader = new BufferedReader(new FileReader(filename));   
@@ -185,7 +185,7 @@ public class TagDeal {
     	return taged;
     } 
     
-  //获取某一标签类的所有标签(xinhanrui)
+  //获取某一标签类的所有标签列表(xinhanrui)
     public static ArrayList<String> getAllTagString(ArrayList<Tag> tags,String tagclass) {
     	ArrayList<String> tagnames= new ArrayList<String>();
     	for(Tag tag : tags) {
@@ -231,7 +231,7 @@ public class TagDeal {
 		return tagandclass;
     }
     
-    //返回指定的ID的arraylist列表(xinhanrui)
+    //返回指定的ID的评论的arraylist列表(xinhanrui)
     public static ArrayList getTagIDs(ArrayList<Tag> tags,String tagclass,String tagname) {
     	ArrayList tagIDs=new ArrayList();
     	for(Tag tag : tags) {
@@ -246,6 +246,6 @@ public class TagDeal {
     
 	public static void main(String[] args) throws IOException {
 		ArrayList<Tag> tags = new ArrayList<Tag>();
-		 tags=readTags();
+		 tags=readTags("Tag.txt");
 	}
  } 
