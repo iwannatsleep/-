@@ -17,7 +17,7 @@ public class ChartView extends  JPanel{
 	ArrayList<Tag> tags;
 	JPanel chart;
 	ChartView() throws IOException{
-		tags=TagDeal.readTags();
+		tags=TagDeal.readTags("Tag.txt");
         JLabel tclabel=new JLabel("标签类:");  
         JComboBox tclist=new JComboBox();    //创建JComboBox
         tclist.addItem("选择标签类别");

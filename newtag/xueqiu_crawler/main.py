@@ -8,6 +8,9 @@ import sys
 symbol = sys.argv[1]
 page = sys.argv[2]
 
+file_handle_clean = open('data_comments.csv', mode='w', encoding='utf8')
+file_handle_clean.write('')
+
 ua = UserAgent() #在工作中进行爬虫时，经常会需要提供User-Agent（请求头），如果不提供User-Agent，会导致爬虫在请求网页时，请求失败，所以需要大量User-Agent
 headers = {'user-agent':ua.random} # 最好的，通过真实世界的浏览器使用统计随机：ua.random
 data_list=[]
@@ -31,7 +34,8 @@ def get_comment(data): #Python 使用def 开始函数定义，紧接着是函数
             text = text.replace('&nbsp;', '')#去除&nbsp
             text = text.replace('/t', '')  # 5.10去除/t，防止与读取评论类文件时与分隔符/t混淆
         if len(text) != 0:
-            data_list.append([text])
+            file_handle = open('data_comments.csv', mode='a', encoding='utf8')
+            file_handle.write(text + '\n')
         #print(text , timeBefore)
         i += 1
 
@@ -68,6 +72,3 @@ for i in range(1,int(page)):
         times += 1
         print(times)
     get_comment(temp)
-
-data_csv = pd.DataFrame(data_list)
-data_csv.to_csv("./data_comments.csv", encoding="utf-8", index=False)

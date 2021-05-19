@@ -10,7 +10,7 @@ import java.util.List;
 
 import data.Comment;
  
-public class Crawler {
+public class Crawler{
 	String symbol; //股票代码，正式操作时从导入界面前端传入
     int page; //爬取页数，正式操作时从导入界面前端传入
     ArrayList<Comment> comments_list=new ArrayList<Comment>();
@@ -36,7 +36,7 @@ public class Crawler {
     }
     //public void setCommentslist(List<Comment> comments_list) {this.comments_list=comments_list;}
     
-    public void craw() throws IOException {
+    public void craw() {
         // TODO Auto-generated method stub
     	Process proc;
     	int i=0;
@@ -53,9 +53,13 @@ public class Crawler {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } 
-        //Thread.currentThread();
-		//Thread.sleep(10000);
-        //java从文件中读取评论
+    }
+    
+    public void Load() throws IOException {
+    	//java从文件中读取评论
+    	int i=0;
+    	int position_comment=0;
+        String filename = "data_comments.csv"; //py爬虫后评论存在这个文件里，java项目从该文件中读取评论
         FileInputStream fis = new FileInputStream(filename);
         InputStreamReader isr = new InputStreamReader(fis, "UTF-8");   
         BufferedReader reader = new BufferedReader(isr);
