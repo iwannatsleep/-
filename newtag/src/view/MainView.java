@@ -116,6 +116,12 @@ public class MainView extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// 调用查看统计图函数
 				frame.remove(tagpanel);
+				try {
+					chartpanel=new ChartView();
+				} catch (IOException e1) {
+					// TODO 自动生成的 catch 块
+					e1.printStackTrace();
+				}
 				frame.add(chartpanel);
 						//contentpanel=new TagView();
 						//frame.add(contentpanel);
@@ -130,9 +136,11 @@ public class MainView extends JFrame {
 ////////主视图对象
 		//contentpanel=new JPanel();
 		tagpanel=new TagView();
-		chartpanel=new ChartView();
+		//chartpanel=new ChartView();
 		//contentpanel.add(tagpanel);
 		frame.add(tagpanel);
+		
+		
 		
 		/*	// 插入图片
 		ImageIcon imageIcon = new ImageIcon(Main.class.getResource("/Icons/unhappy.jpg"));
