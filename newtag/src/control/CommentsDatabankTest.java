@@ -30,7 +30,7 @@ public class CommentsDatabankTest {
 		assertTrue(!folder.exists());//文件不存在才通过
 		CommentsDatabank savecomments = new CommentsDatabank();
 		ArrayList<Comment> commentsdatabanksavetest=new ArrayList<Comment>();
-		commentsdatabanksavetest.add(new Comment(1,"评论1","SH600519",false));
+		commentsdatabanksavetest.add(new Comment(1,"评论1","SH600519",false,false));
 		try {
 			savecomments.saveComments(commentsdatabanksavetest);
 		} catch (IOException e) {
@@ -48,7 +48,7 @@ public class CommentsDatabankTest {
 		CommentsDatabank comments = new CommentsDatabank();
 		ArrayList<Comment> commentsdatabanktest=new ArrayList<Comment>();
 		//先往文件里存一个数据
-		commentsdatabanktest.add(new Comment(1,"评论1","SH600519",false));
+		commentsdatabanktest.add(new Comment(1,"评论1","SH600519",false,false));
 		try {
 			comments.saveComments(commentsdatabanktest);
 		} catch (IOException e) {
@@ -73,7 +73,7 @@ public class CommentsDatabankTest {
 	public void testDeleteComment() {
 		CommentsDatabank commentsdatabank = new CommentsDatabank();
 		ArrayList<Comment> comments_test_list=new ArrayList<Comment>();
-		comments_test_list.add(new Comment(1,"评论1","SH600519",false));//添加一条ID为1的评论
+		comments_test_list.add(new Comment(1,"评论1","SH600519",false,false));//添加一条ID为1的评论
 		for(Comment comment : comments_test_list) {
 			assertEquals(1,comment.getId());//判断是否有ID为1的评论
 		}
@@ -88,8 +88,8 @@ public class CommentsDatabankTest {
 	public void testChangeTagedornot() {
 		CommentsDatabank commentsdatabank = new CommentsDatabank();
 		ArrayList<Comment> comments_test_list=new ArrayList<Comment>();
-		comments_test_list.add(new Comment(1,"评论1","SH600519",false));//添加一条tagedornot位为false的评论
-		comments_test_list.add(new Comment(2,"评论2","SH600519",true));//添加一条tagedornot位为true的评论
+		comments_test_list.add(new Comment(1,"评论1","SH600519",false,false));//添加一条tagedornot位为false的评论
+		comments_test_list.add(new Comment(2,"评论2","SH600519",true,false));//添加一条tagedornot位为true的评论
 		for(Comment comment : comments_test_list) {
 			if(comment.getId()==2) {assertTrue(comment.getTagedornot());}//判断原本是否为true
 			if(comment.getId()==1) {assertFalse(comment.getTagedornot());}//判断原本是否为false
@@ -107,8 +107,8 @@ public class CommentsDatabankTest {
 	public void testUnTagedComments() {
 		CommentsDatabank commentsdatabank = new CommentsDatabank();
 		ArrayList<Comment> comments_test_list=new ArrayList<Comment>();
-		comments_test_list.add(new Comment(1,"评论1","SH600519",false));//添加一条tagedornot位为false的评论
-		comments_test_list.add(new Comment(2,"评论2","SH600519",true));//添加一条tagedornot位为true的评论
+		comments_test_list.add(new Comment(1,"评论1","SH600519",false,false));//添加一条tagedornot位为false的评论
+		comments_test_list.add(new Comment(2,"评论2","SH600519",true,false));//添加一条tagedornot位为true的评论
 		ArrayList<Comment> test_list=commentsdatabank.unTagedComments(comments_test_list);//未标注的评论列表
 		for(Comment comment : test_list) {
 			assertFalse(comment.getTagedornot());//判断返回列表的标志位是否为False
@@ -120,8 +120,8 @@ public class CommentsDatabankTest {
 	public void testTagedComments() {
 		CommentsDatabank commentsdatabank = new CommentsDatabank();
 		ArrayList<Comment> comments_test_list=new ArrayList<Comment>();
-		comments_test_list.add(new Comment(1,"评论1","SH600519",false));//添加一条tagedornot位为false的评论
-		comments_test_list.add(new Comment(2,"评论2","SH600519",true));//添加一条tagedornot位为true的评论
+		comments_test_list.add(new Comment(1,"评论1","SH600519",false,false));//添加一条tagedornot位为false的评论
+		comments_test_list.add(new Comment(2,"评论2","SH600519",true,false));//添加一条tagedornot位为true的评论
 		ArrayList<Comment> test_list=commentsdatabank.TagedComments(comments_test_list);//已标注的评论列表
 		for(Comment comment : test_list) {
 			assertTrue(comment.getTagedornot());//判断返回列表的标志位是否为true
@@ -133,10 +133,30 @@ public class CommentsDatabankTest {
 	public void testGetCommentbyID() {
 		CommentsDatabank commentsdatabank = new CommentsDatabank();
 		ArrayList<Comment> comments_test_list=new ArrayList<Comment>();
-		comments_test_list.add(new Comment(1,"评论1","SH600519",false));//添加一条tagedornot位为false的评论
-		comments_test_list.add(new Comment(2,"评论2","SH600519",true));//添加一条tagedornot位为true的评论
+		comments_test_list.add(new Comment(1,"评论1","SH600519",false,false));//添加一条tagedornot位为false的评论
+		comments_test_list.add(new Comment(2,"评论2","SH600519",true,false));//添加一条tagedornot位为true的评论
 		Comment test_comment=commentsdatabank.getCommentbyID(comments_test_list,1);
 		assertEquals(1,test_comment.getId());
 	}
 
+	@Test
+	//
+	public void testIdChangeList() {
+		CommentsDatabank commentsdatabank = new CommentsDatabank();
+		ArrayList<Comment> comments_test_list_a=new ArrayList<Comment>();
+		comments_test_list_a.add(new Comment(1,"评论1","SH600519",false,false));
+		comments_test_list_a.add(new Comment(2,"评论2","SH600519",false,false));
+		comments_test_list_a.add(new Comment(3,"评论3","SH600519",false,false));
+		comments_test_list_a.add(new Comment(4,"评论4","SH600519",false,false));
+		comments_test_list_a.add(new Comment(5,"评论5","SH600519",false,false));
+		ArrayList<Comment> comments_test_list_b=new ArrayList<Comment>();
+		comments_test_list_b.add(new Comment(1,"评论2","SH600519",false,false));
+		comments_test_list_b.add(new Comment(2,"评论3","SH600519",false,false));
+		comments_test_list_b.add(new Comment(3,"评论4","SH600519",false,false));
+		comments_test_list_b.add(new Comment(4,"评论5","SH600519",false,false));
+		comments_test_list_b.add(new Comment(5,"评论6","SH600519",false,false));
+		int[][] idchangelist=commentsdatabank.IdChangeList(comments_test_list_a, comments_test_list_b);
+		comments_test_list_a.size();
+		
+	}
 }

@@ -66,10 +66,22 @@ public class Crawler{
         String line;
         line = reader.readLine();//从第二行评论开始读（第一行是0）
         while ((line = reader.readLine()) != null) {   
-        	comments_list.add(position_comment,new Comment(i+1,line,symbol,false)); //暂时输出到控制台，等comment数据类做好后直接传到list中 
+        	if(Isnotrepeat(line)) {
+        	comments_list.add(position_comment,new Comment(i+1,line,symbol,false,false)); //暂时输出到控制台，等comment数据类做好后直接传到list中 
         	i++;
         	position_comment++;
+        	}
         }
         reader.close();
+    }
+    
+    private boolean Isnotrepeat(String line) {
+    	for(Comment comment:comments_list) {
+    		if(comment.getText().equals(line)) {
+    			return false;
+    		}
+    	}
+    	
+    	return true;
     }
 }

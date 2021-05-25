@@ -118,26 +118,97 @@ public class CommentsDatabank {
     
     //返回指定ID的Comment
     public Comment getCommentbyID(ArrayList<Comment> comments,int id){
-    	Comment commentofid=new Comment(1,"","",false);
+    	Comment commentofid=new Comment(1,"","",false,false);
     	for(Comment comment : comments) {
     		if(comment.getId()==id) {
-    			commentofid=new Comment(comment.getId(),comment.getText(),comment.getSymbol(),comment.getTagedornot());
+    			commentofid=new Comment(comment.getId(),comment.getText(),comment.getSymbol(),comment.getTagedornot(),comment.getIsconflict());
     			break;
     		}
     	}  	
 		return commentofid;
     }
     
+    public int[][] IdChangeList(ArrayList<Comment> a_commentslist,ArrayList<Comment> b_commentslist){
+    	int[][] idchangelist=new int[10000][2];
+    	int i=0;
+    	int j=0;
+    	for(Comment comment_a:a_commentslist) {
+    		while(b_commentslist.size() != j) {
+    			if(comment_a.getText().equals(b_commentslist.get(j).getText())) {
+    				idchangelist[i][0]=comment_a.getId();
+    				idchangelist[i][1]=b_commentslist.get(j).getId();
+    				b_commentslist.remove(j);
+    				i++;
+    			}
+    			else {j++;}
+    		}
+    		j=0;
+    	}
+    	int x=a_commentslist.get(a_commentslist.size()-1).getId()+1;
+    	int y=0;
+    	if(b_commentslist.size()!=0) {
+    		for(Comment comment_b:b_commentslist) {
+    			a_commentslist.add(new Comment(x,comment_b.getText(),comment_b.getSymbol(),comment_b.getTagedornot(), comment_b.getIsconflict()));
+    			idchangelist[i][0]=x;
+				idchangelist[i][1]=b_commentslist.get(y).getId();
+				x++;
+				i++;
+				y++;
+    		}
+    	}
+    	return idchangelist;
+    }
+    
+    //标志istagconflict位,传入bool=1置为true,传入其他数值置为false
+    public void ChangeIstagconflict(ArrayList<Comment> comments,int id,int bool) {
+    	if(id>0) {
+	    	for (Comment comment : comments) {
+	    		if(comment.getId()==id) {
+	    			if(bool==1) comment.setIsconflict(true);
+	    			else comment.setIsconflict(false);
+	    			break;
+	    		}
+	    	}
+    	}
+    	try {
+			saveComments(comments);
+		} catch (IOException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+    }
+    //返回以列表形式返回标注无冲突的评论
+    public ArrayList<Comment> noConflictComments(ArrayList<Comment> comments){
+    	ArrayList<Comment> noconflictcomments=new ArrayList<Comment>();
+    	for(Comment comment : comments) {
+    		if(!comment.getIsconflict()) {
+    			noconflictcomments.add(comment);
+    		}
+    	}
+    	return noconflictcomments;
+    }
+    
+  //返回以列表形式返回标注有冲突的评论
+    public ArrayList<Comment> ConflictComments(ArrayList<Comment> comments){
+    	ArrayList<Comment> conflictcomments=new ArrayList<Comment>();
+    	for(Comment comment : comments) {
+    		if(comment.getIsconflict()) {
+    			conflictcomments.add(comment);
+    		}
+    	}
+    	return conflictcomments;
+    }
+    
     // 通过一行文件内容生成一个 Comment 对象   
     private Comment getPersonFromString(String line) {   
         String[] parts = line.split("\t");  // 获取被分隔的四个部分   
     
-        return new Comment(Integer.parseInt(parts[0]),  parts[1],  parts[2], Boolean.parseBoolean(parts[3]));   
+        return new Comment(Integer.parseInt(parts[0]),  parts[1],  parts[2], Boolean.parseBoolean(parts[3]), Boolean.parseBoolean(parts[4]));   
     }
     
     //保存格式，以\t分隔
     private static String getCommentString(Comment comment) {   
-        return comment.getId() + "\t" + comment.getText() + "\t" + comment.getSymbol() + "\t" + comment.getTagedornot();   
+        return comment.getId() + "\t" + comment.getText() + "\t" + comment.getSymbol() + "\t" + comment.getTagedornot() + "\t" + comment.getIsconflict();   
     }
     
     // 显示 Person 对象   

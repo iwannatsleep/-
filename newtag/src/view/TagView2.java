@@ -42,7 +42,7 @@ import control.TagDeal;
 import data.Comment;
 import data.Tag;
 
-public class TagView extends  JPanel{;
+public class TagView2 extends  JPanel{;
 	ArrayList<Comment> comments_list,comments_show_list;
 	ArrayList<Tag> tags;
 	ArrayList<String> tagschooselist,tagsclasschooselist;
@@ -53,7 +53,7 @@ public class TagView extends  JPanel{;
 	DefaultTableModel cmodel;
 	String selectedtagcla,selectedtag,selectedtaged,selectedcommentscla;
 	CommentsDatabank commentsdatabank=new CommentsDatabank();
-	TagView() throws IOException {
+	TagView2() throws IOException {
 		selectedID=-1;
 ////////读入数据
 		comments_list=commentsdatabank.readComments("Comment.data");
@@ -92,42 +92,25 @@ public class TagView extends  JPanel{;
 		setLayout(null);
 ////////显示评论内容
 		JLabel tlabel=new JLabel("内容：");   
-        tlabel.setBounds(320,50,200,30);
+        tlabel.setBounds(330,10,200,30);
         add(tlabel);
 		JTextPane txt = new JTextPane();
 		JScrollPane txtscroll = new JScrollPane(txt);
 		txtscroll.setBackground(SystemColor.inactiveCaptionBorder);
-		txtscroll.setBounds(320, 80, 200, 145);
+		txtscroll.setBounds(330, 50, 250, 350);
 		add(txtscroll);
 
 ////////已被标注标签表
 		JLabel tdlabel=new JLabel("已标注标签：");    
-        tdlabel.setBounds(320,225,200,30);
+        tdlabel.setBounds(600,10,200,30);
         add(tdlabel);
 		DefaultListModel tmodel = new DefaultListModel();
 		tagedlist=new JList(tmodel);
 		tagedlist = new JList(tmodel);
 		JScrollPane tagedscroll = new JScrollPane(tagedlist);
-		tagedscroll.setBounds(320,255,200,145);
+		tagedscroll.setBounds(600, 50, 250, 350);
 		add(tagedscroll);
-		
-////////标签类下拉栏
-        JLabel tclabel=new JLabel("标签类:");  
-        tclabel.setBounds(530,50,50,20);
-        String[] tagscombobox= new String[99];
-        tagscombobox[0]="请选择标签类别";
-        JComboBox<String> tagclasseslist=new JComboBox<String>(tagscombobox);    //创建JComboBox
-        tagclasseslist.setBounds(600,50,200,20);
-        tagsclasschooselist=TagDeal.getAllTagClass(tags);
-        for(int i=0;i<tagsclasschooselist.size();i++)
-        	tagscombobox[i+1]=tagsclasschooselist.get(i);    //向下拉列表中添加一项
-        tagclasseslist.setModel(new DefaultComboBoxModel<String>(tagscombobox));
-        /*JComboBox tclist=new JComboBox();    //创建JComboBox
-        tclist.setBounds(600,50,200,20);
-        for(int i=0;i<TagDeal.getAllTagClass(tags).size();i++)
-        	tclist.addItem(TagDeal.getAllTagClass(tags).get(i));    //向标签类下拉列表中添加一项*/
-        add(tclabel);
-        add(tagclasseslist);
+
 
 ////////筛选评论下拉栏
         JLabel commentschooselabel=new JLabel("筛选评论:");    //创建标签
@@ -146,66 +129,8 @@ public class TagView extends  JPanel{;
         add(commentschooselabel);
         add(commentschooselist);
 
-////////标签表
-		DefaultListModel alltmodel = new DefaultListModel();
-		taglist=new JList(alltmodel);
-		JScrollPane tagscroll = new JScrollPane(taglist);
-		for(int i=0;i<TagDeal.getAllTag(tags,(String)tagclasseslist.getSelectedItem()).size();i++)
-			alltmodel.addElement(TagDeal.getAllTag(tags,(String)tagclasseslist.getSelectedItem()).get(i).getTagName());    //向标签表列表中添加一项
-		tagscroll.setBounds(600,100,200,150);
-		add(tagscroll);
-///////右键删除菜单
-		JPopupMenu popup=new JPopupMenu();
-	    JMenuItem del=new JMenuItem("删除");
-	    del.addActionListener(new ActionListener(){
-	    	public void actionPerformed(ActionEvent e){
-	    		try {
-					TagDeal.delTag(tags,selectedtagcla,selectedtag);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-	    		tagschooselist=TagDeal.getAllTagandClass(tags);
-	    	        for(int x=0;x<tagschooselist.size();x++)
-	    	        	commentscombobox[x+4]=tagschooselist.get(x);    //向下拉列表中添加一项
-	    	        for(int y=tagsclasschooselist.size();y<95;y++)
-	    	        	commentscombobox[y+4]="";
-	    	        commentschooselist.setModel(new DefaultComboBoxModel<String>(commentscombobox));
-	    		alltmodel.removeElement(selectedtag);
-	    		if(alltmodel.isEmpty()) {
-	    			//此处需要更新tagclasseslist
-	    			//tagclasseslist.remove(tclist.getSelectedIndex());
-	    			tagsclasschooselist=TagDeal.getAllTagClass(tags);
-	    	        for(int i=0;i<tagsclasschooselist.size();i++)
-	    	        	tagscombobox[i+1]=tagsclasschooselist.get(i);    //向下拉列表中添加一项
-	    	        for(int j=tagsclasschooselist.size();j<98;j++)
-	    	        	tagscombobox[j+1]="";
-	    	        tagclasseslist.setModel(new DefaultComboBoxModel<String>(tagscombobox));
-	    	       
-	    		}
-	    	}
-	    	});
-	    popup.add(del);
-///////增加标签
-		JLabel addtaglabel=new JLabel("添加标签");   
-		addtaglabel.setBounds(610,260,100,30);
-        add(addtaglabel);
-		JLabel addtagclass=new JLabel("标签类名：");   
-		addtagclass.setBounds(530,290,100,30);
-        add(addtagclass);
-        JTextField tct = new JTextField();
-        tct.setBounds(600, 290, 200, 30);
-        add(tct);
-		JLabel addtag=new JLabel("标签名：");   
-		addtag.setBounds(530,330,100,30);
-        add(addtag);
-        JTextField tt = new JTextField();
-        tt.setBounds(600, 330, 200, 30);
-        add(tt);
-		Button addbutton= new Button();
-		addbutton.setLabel("确认");
-		addbutton.setBounds(600,370,80,30);
-		add(addbutton);
+
+
 ///////评论表事件
 	    commentslist.addMouseListener(new MouseAdapter() {
 	    @Override
@@ -245,21 +170,6 @@ public class TagView extends  JPanel{;
 	        	tmodel.clear();
 	        }
 	    } 
-	});
-////标签类下拉栏事件
-	tagclasseslist.addItemListener(new ItemListener() {
-	    public void itemStateChanged(ItemEvent e) {
-	        // 选取标签类后在下方列表显示此标签类的标签
-	    	if(e.getStateChange()==ItemEvent.SELECTED){
-	    		selectedtagcla=(String) e.getItem();
-	    		if(!selectedtagcla.equals("选择标签类别")) {
-	        	alltmodel.clear();
-	            for(int i=0;i<TagDeal.getAllTag(tags, selectedtagcla).size();i++){
-	            	alltmodel.addElement(TagDeal.getAllTag(tags, selectedtagcla).get(i).getTagName());
-	            	} 
-	            } 
-	    	}
-	    }
 	});
 	
 ////筛选评论下拉栏事件
@@ -305,99 +215,7 @@ public class TagView extends  JPanel{;
 	    	}
 	    }
 	});
-	
-////标签列表事件
-	taglist.addMouseListener(new MouseAdapter() {
-	    @Override
-	    public void mouseClicked(MouseEvent e) {
-	        if (SwingUtilities.isLeftMouseButton(e)) {
-	        	// 左键点击选取标签标注此评论
-	        	if(selectedID!=-1)
-	        	//如果已经选取了某一评论
-	        	{
-	        		try {
-						TagDeal.addID(tags,(String)selectedtagcla,(String)taglist.getSelectedValue(), selectedID);
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-	        		commentsdatabank.ChangeTagedornot(comments_list, selectedID, 1);
-	        		tmodel.clear();
-	        		for(int i=0;i<TagDeal.getTaged(tags, selectedID).size();i++){
-		            	tmodel.addElement(TagDeal.getTaged(tags, selectedID).get(i));
-		            } 
-	        		if(TagDeal.IsConflict(tags, selectedID)) {commentsdatabank.ChangeIstagconflict(comments_list, selectedID, 1);}
-	        	}
-	        }
-	        if (SwingUtilities.isRightMouseButton(e)) {
-	        	selectedtag=(String)taglist.getSelectedValue();
-	        	popup.show(e.getComponent(),e.getX(),e.getY());
-	        }
-	    }
-	});
-////增加标签事件
-	addbutton.addActionListener(new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if( !tct.getText().trim().equals("")&& !tt.getText().trim().equals("")) {
-				int flag=0;
-				ArrayList tc=new ArrayList();
-				tc=TagDeal.getAllTagClass(tags);
-				for(int i=0;i<tc.size();i++) {
-					//若存在此标签类,flag置1,无需修改标签类下拉栏
-					if(tc.get(i).equals(tct.getText())) {
-						flag=1;
-						ArrayList<Tag> t=new ArrayList<Tag>();
-						t=TagDeal.getAllTag(tags,tct.getText());
-						for(int j=0;j<t.size();j++) {
-							//若存在此标签,flag置2
-							if(t.get(j).getTagName().equals(tt.getText())) {
-								flag=2;
-								// 提示此标签已存在
-								JOptionPane.showMessageDialog(null, "此标签已存在!");
-							}
-						}
-					}
-				}
-				if(flag==0) {
-					//若未存在此标签类,在标签类下拉栏中添加此标签类
-					//tclist.addItem(tct.getText());
-					try {
-						TagDeal.createTags(tags,tct.getText(),tt.getText());
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					tagsclasschooselist=TagDeal.getAllTagClass(tags);
-	    	        for(int i=0;i<tagsclasschooselist.size();i++)
-	    	        	tagscombobox[i+1]=tagsclasschooselist.get(i);    //向下拉列表中添加一项
-	    	        tagclasseslist.setModel(new DefaultComboBoxModel<String>(tagscombobox));
-	    	        alltmodel.clear();
-	    	        tagschooselist=TagDeal.getAllTagandClass(tags);
-	    	        for(int i=0;i<tagschooselist.size();i++)
-	    	        	commentscombobox[i+4]=tagschooselist.get(i);    //向下拉列表中添加一项
-	    	        commentschooselist.setModel(new DefaultComboBoxModel<String>(commentscombobox));
-				}
-				else if(flag==1) {
-					try {
-						TagDeal.createTags(tags,tct.getText(),tt.getText());
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					tagclasseslist.setModel(new DefaultComboBoxModel<String>(tagscombobox));
-					alltmodel.clear();
-					tagschooselist=TagDeal.getAllTagandClass(tags);
-	    	        for(int i=0;i<tagschooselist.size();i++)
-	    	        	commentscombobox[i+4]=tagschooselist.get(i);    //向下拉列表中添加一项
-	    	        commentschooselist.setModel(new DefaultComboBoxModel<String>(commentscombobox));
-				}
-				
-			}
-			else
-				JOptionPane.showMessageDialog(null, "标签类或标签未填写!");
-		}
-	});
+
 ////删除已贴标签
 	tagedlist.addMouseListener(new MouseAdapter() {
 	    @Override

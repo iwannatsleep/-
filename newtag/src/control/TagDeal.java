@@ -174,12 +174,30 @@ public class TagDeal {
     
     //获取标注此评论的所有标签
     public static ArrayList<String> getTaged(ArrayList<Tag> tags,int ID) {
+    	String[][] checklist=new String[1000][2];
     	ArrayList<String> taged= new ArrayList<String>();
     	String temp;
+    	int i = 0;
+    	int j = 0;
     	for(Tag tag : tags) {
     		if(tag.haveID(ID)) {
-    			temp=tag.getTagClass()+":"+tag.getTagName();
+    			checklist[i][0]=tag.getTagClass();
+    			checklist[i][1]=tag.getTagName();
+    			i++;
+    		}
+        }
+    	for(Tag tag : tags) {
+    		if(tag.haveID(ID)) {
+    			temp=tag.getTagClass()+" "+tag.getTagName();
+    			while(checklist[j][0]!=null) {
+    				if(checklist[j][0].equals(tag.getTagClass())&&(!checklist[j][1].equals(tag.getTagName()))) {
+    					temp=temp+"            冲突";
+    					break;
+    				}
+    				j++;
+    			}
     			taged.add(temp);
+    			j = 0;
     		}
         }
     	return taged;
@@ -225,7 +243,7 @@ public class TagDeal {
     	for(String tagclass : alltagclass) {
     		alltag=getAllTagString(tags,tagclass);
     		for(int i=0;i<alltag.size();i++) {
-    		tagandclass.add(tagclass + ":" + alltag.get(i));
+    		tagandclass.add(tagclass + " " + alltag.get(i));
     		}
     	}
 		return tagandclass;
@@ -242,6 +260,63 @@ public class TagDeal {
     		}
     	}
     	return tagIDs;
+    }
+    
+    //
+    public static void TagClassMerge(ArrayList<Tag> tags_a,ArrayList<Tag> tags_b) {
+    	boolean flag;
+    	for(Tag tag_b:tags_b) {
+    		flag=true;
+    		for(Tag tag_a:tags_a) {
+    			if(tag_a.getTagClass().equals(tag_b.getTagClass()) && tag_a.getTagName().equals(tag_b.getTagName())) {
+    				flag=false;
+    			}
+    		}
+    		if(flag) {
+    			ArrayList a=new ArrayList();a.add(0);
+    			tags_a.add(new Tag(tag_b.getTagClass(),tag_b.getTagName(),a));
+    		}
+    	}
+    }
+    
+    //
+    public static void TagsMerge(ArrayList<Tag> tags_a,ArrayList<Tag> tags_b,int IDA,int IDB) {
+    	ArrayList<String> idstring=getTaged(tags_b,IDB);
+    	for(int i=0;i<idstring.size();i++) {
+    		String[] parts = idstring.get(i).split(" ");
+    		try {
+				addID(tags_a,parts[0],parts[1], IDA);
+			} catch (IOException e) {
+				// TODO 自动生成的 catch 块
+				e.printStackTrace();
+			}
+    	}
+    }
+    
+    //判断同一个评论是否在同一个标签类里标注了多个
+    public static boolean IsConflict(ArrayList<Tag> tags,int ID) {
+    	String[][] checklist=new String[1000][2];
+    	int i = 0;
+    	int j = 0;
+    	for(Tag tag : tags) {
+    		if(tag.haveID(ID)) {
+    			checklist[i][0]=tag.getTagClass();
+    			checklist[i][1]=tag.getTagName();
+    			i++;
+    		}
+        }
+    	for(Tag tag : tags) {
+    		if(tag.haveID(ID)) {
+    			while(checklist[j][0]!=null) {
+    				if(checklist[j][0].equals(tag.getTagClass())&&(!checklist[j][1].equals(tag.getTagName()))) {
+    					return true;
+    				}
+    				j++;
+    			}
+    			j = 0;
+    		}
+        }
+    	return false;
     }
     
 	public static void main(String[] args) throws IOException {

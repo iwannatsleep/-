@@ -42,13 +42,13 @@ import java.awt.Toolkit;
 
 
 
-public class MainView extends JFrame {
+public class MainView2 extends JFrame {
 
 	public JPanel contentpanel,tagpanel,chartpanel;
 	private DefaultListModel model;
     private JList list;	
     JFrame frame=new JFrame("第八组数据标记软件");
-	public MainView() throws IOException {
+	public MainView2() throws IOException {
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/Icons/icon.jpg")));
 		frame.setBounds(100, 100, 900,500);
 
@@ -147,7 +147,7 @@ public class MainView extends JFrame {
 	
 ////////主视图对象
 		//contentpanel=new JPanel();
-		tagpanel=new TagView();
+		tagpanel=new TagView2();
 		//chartpanel=new ChartView();
 		//contentpanel.add(tagpanel);
 		frame.add(tagpanel);

@@ -78,6 +78,7 @@ public class Downloading extends JFrame {
 				}
 				CommentsDatabank comments_databank=new CommentsDatabank();
 				ArrayList<Comment> comments_list=crawler.getCommentslist();
+				if(comments_list.size()==0) {comments_list.add(new Comment(1,"ÎÞÊý¾Ý","SH000000",false,false));}
 				comments_databank.setCommentslist(comments_list);
 				try {
 					comments_databank.saveComments(comments_list);
