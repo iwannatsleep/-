@@ -45,9 +45,10 @@ import java.awt.Toolkit;
 
 public class MainView extends JFrame {
 
-	public JPanel contentpanel,tagpanel,chartpanel;
+	public JPanel contentpanel,tagpanel,chartpanel,tagpanel2;
 	private DefaultListModel model;
     private JList list;	
+    int flag=0;
     JFrame frame=new JFrame("第八组数据标记软件");
 	public MainView() throws IOException {
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(Main.class.getResource("/Icons/icon.jpg")));
@@ -100,6 +101,17 @@ public class MainView extends JFrame {
 			}
 		});
 		
+		JMenuItem ImportItem_4 = new JMenuItem();
+		ImportItem_4.setText("数据导出");
+		Import.add(ImportItem_4);
+		ImportItem_4.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// 调用下载函数
+				new ExportDoc();
+			}
+		});
+		
 		//菜单栏视图选项
 		JMenu View=new JMenu();
 		View.setText("视图");
@@ -111,9 +123,11 @@ public class MainView extends JFrame {
 		ViewItem_1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// 调用查看统计图函数
-				frame.remove(chartpanel);
+				// 调用评论标注函数
+				if(flag==2) {frame.remove(chartpanel);}
+				if(flag==3) {frame.remove(tagpanel2);}
 				frame.add(tagpanel);
+				flag=1;
 						//contentpanel=new TagView();
 						//frame.add(contentpanel);
 						//frame.repaint();
@@ -128,7 +142,8 @@ public class MainView extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// 调用查看统计图函数
-				frame.remove(tagpanel);
+				if(flag==1) {frame.remove(tagpanel);}
+				if(flag==3) {frame.remove(tagpanel2);}
 				try {
 					chartpanel=new ChartView();
 				} catch (IOException e1) {
@@ -136,6 +151,31 @@ public class MainView extends JFrame {
 					e1.printStackTrace();
 				}
 				frame.add(chartpanel);
+				flag=2;
+						//contentpanel=new TagView();
+						//frame.add(contentpanel);
+						//frame.repaint();
+				frame.revalidate();
+				frame.repaint();
+			}
+		});
+		JMenuItem ViewItem_3 = new JMenuItem();
+		ViewItem_3 .setText("合并页面");
+		View.add(ViewItem_3);
+		ViewItem_3.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// 调用查看统计图函数
+				if(flag==1) {frame.remove(tagpanel);}
+				if(flag==2) {frame.remove(chartpanel);}
+				try {
+					tagpanel2=new TagView2();
+				} catch (IOException e1) {
+					// TODO 自动生成的 catch 块
+					e1.printStackTrace();
+				}
+				frame.add(tagpanel2);
+				flag=3;
 						//contentpanel=new TagView();
 						//frame.add(contentpanel);
 						//frame.repaint();
@@ -152,6 +192,7 @@ public class MainView extends JFrame {
 		//chartpanel=new ChartView();
 		//contentpanel.add(tagpanel);
 		frame.add(tagpanel);
+		flag=1;
 		
 		
 		
