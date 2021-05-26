@@ -23,7 +23,7 @@ public class CommentsDatabank {
     // 保存对象到文件。保存格式为：   
     // 1、每个一行   
     // 2、每行依次存放id text symbol三个属性值，用 tab 隔开  
-    public void saveComments(ArrayList<Comment> comments) throws IOException {   
+    public void saveComments(ArrayList<Comment> comments,String filename) throws IOException {   
     
     	File file = new File(filename);
     	if (!file.exists()) {
@@ -60,7 +60,7 @@ public class CommentsDatabank {
         return result;   
     }
     //删除评论
-    public void DeleteComment(ArrayList<Comment> comments,int id) {
+    public void DeleteComment(ArrayList<Comment> comments,int id,String filename) {
     	if(id>0) {
 	    	for (Comment comment : comments) {
 	    		if(comment.getId()==id) {
@@ -70,14 +70,14 @@ public class CommentsDatabank {
 	    	}
     	}
     	try {
-			saveComments(comments);
+			saveComments(comments,filename);
 		} catch (IOException e) {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
     }
     //标志tagedornot位,传入bool=1置为true,传入其他数值置为false
-    public void ChangeTagedornot(ArrayList<Comment> comments,int id,int bool) {
+    public void ChangeTagedornot(ArrayList<Comment> comments,int id,int bool,String filename) {
     	if(id>0) {
 	    	for (Comment comment : comments) {
 	    		if(comment.getId()==id) {
@@ -88,7 +88,7 @@ public class CommentsDatabank {
 	    	}
     	}
     	try {
-			saveComments(comments);
+			saveComments(comments,filename);
 		} catch (IOException e) {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();
@@ -128,6 +128,7 @@ public class CommentsDatabank {
 		return commentofid;
     }
     
+    //合并两个评论文件，内容相同的合并作为一项
     public int[][] IdChangeList(ArrayList<Comment> a_commentslist,ArrayList<Comment> b_commentslist){
     	int[][] idchangelist=new int[10000][2];
     	int i=0;
@@ -160,7 +161,7 @@ public class CommentsDatabank {
     }
     
     //标志istagconflict位,传入bool=1置为true,传入其他数值置为false
-    public void ChangeIstagconflict(ArrayList<Comment> comments,int id,int bool) {
+    public void ChangeIstagconflict(ArrayList<Comment> comments,int id,int bool,String filename) {
     	if(id>0) {
 	    	for (Comment comment : comments) {
 	    		if(comment.getId()==id) {
@@ -171,7 +172,7 @@ public class CommentsDatabank {
 	    	}
     	}
     	try {
-			saveComments(comments);
+			saveComments(comments,filename);
 		} catch (IOException e) {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();

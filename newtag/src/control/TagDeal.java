@@ -17,14 +17,14 @@ public class TagDeal {
     	ArrayList empty= new ArrayList();
     	empty.add(0);
         tags.add(new Tag(TagClass,TagName,empty));
-        saveTags(tags);
+        saveTags(tags,"Tag.txt");
         return tags;   
     }   
     
     // 保存 Tag 对象到文件。保存格式为：   
     // 1、每个 Tag 一行   
     // 2、每行依次存放 TagClass,TagName,ID 三个属性值，用 tab 隔开,ID不同元素间用逗号隔开
-    public static void saveTags( ArrayList<Tag> tags) throws IOException {   
+    public static void saveTags( ArrayList<Tag> tags,String filename) throws IOException {   
     
         // 生成文件内容   
         String data = "";   
@@ -103,18 +103,18 @@ public class TagDeal {
         		 break;
         	 }
          } 
-         saveTags(tags);
+         saveTags(tags,"Tag.txt");
     }
     
     //删除被此评论标注的ID
-    public static void delID(ArrayList<Tag> tags,String tagclass,String tagname,int ID) throws IOException{
+    public static void delID(ArrayList<Tag> tags,String tagclass,String tagname,int ID,String filename) throws IOException{
         for (Tag tag : tags) {   
         	if(tag.getTagClass().equals(tagclass) && tag.getTagName().equals(tagname)) {
         		tag.removeID(ID);
         		break;
         	}
         } 
-        saveTags(tags);
+        saveTags(tags,filename);
     }
     
     //删除某一标签
@@ -125,7 +125,7 @@ public class TagDeal {
         		break;
         	}
         } 
-        saveTags(tags);
+        saveTags(tags,"Tag.txt");
     }
     
   //获取所有标签类
@@ -221,7 +221,7 @@ public class TagDeal {
         		tag.removeID(ID);
         	}
         } 
-        saveTags(tags);
+        saveTags(tags,"Tag.txt");
     }
     
   //返回该评论是否被标签标注(xinhanrui)
@@ -262,7 +262,7 @@ public class TagDeal {
     	return tagIDs;
     }
     
-    //
+    //将两个标签文件的标签类标签合并，存在tags_a中（不包括ID的ArrayList）(xinhanrui)
     public static void TagClassMerge(ArrayList<Tag> tags_a,ArrayList<Tag> tags_b) {
     	boolean flag;
     	for(Tag tag_b:tags_b) {
@@ -279,7 +279,7 @@ public class TagDeal {
     	}
     }
     
-    //
+    //将两个标签文件的标签合并，存在tags_a中（包括ID的ArrayList）(xinhanrui)
     public static void TagsMerge(ArrayList<Tag> tags_a,ArrayList<Tag> tags_b,int IDA,int IDB) {
     	ArrayList<String> idstring=getTaged(tags_b,IDB);
     	for(int i=0;i<idstring.size();i++) {
@@ -293,7 +293,7 @@ public class TagDeal {
     	}
     }
     
-    //判断同一个评论是否在同一个标签类里标注了多个
+    //判断同一个评论是否在同一个标签类里标注了多个，是则返回true(xinhanrui)
     public static boolean IsConflict(ArrayList<Tag> tags,int ID) {
     	String[][] checklist=new String[1000][2];
     	int i = 0;

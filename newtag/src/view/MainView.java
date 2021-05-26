@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
+import data.Logs;
 import view.Main;
 
 import javax.swing.JMenuBar;

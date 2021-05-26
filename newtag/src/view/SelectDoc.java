@@ -6,6 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import data.Comment;
+import data.Logs;
 import data.Tag;
 import control.CommentsDatabank;
 import control.TagDeal;
@@ -28,6 +29,7 @@ public class SelectDoc implements ActionListener{
     ArrayList<Comment> comments_list=new ArrayList<Comment>();
     TagDeal tagdeal=new TagDeal();
     ArrayList<Tag> tags_list=new ArrayList<Tag>();
+    Logs logwrite=new Logs();
     SelectDoc(){
         jfc.setCurrentDirectory(new File("."));//文件选择器的初始目录定为d盘
         jfc1.setCurrentDirectory(new File("."));//文件选择器的初始目录定为d盘
@@ -65,6 +67,13 @@ public class SelectDoc implements ActionListener{
         
         btnOKButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
+        		String log="从本地文件中导入数据:"+ " " + text2.getText()+ " " + text3.getText();
+        		try {
+					logwrite.writeLog(log);
+				} catch (IOException e3) {
+					// TODO 自动生成的 catch 块
+					e3.printStackTrace();
+				}
         		try {
         			comments_list=commentsdatabank.readComments(text2.getText());
 				} catch (IOException e1) {
@@ -72,7 +81,7 @@ public class SelectDoc implements ActionListener{
 					e1.printStackTrace();
 				}
         		try {
-					commentsdatabank.saveComments(comments_list);
+					commentsdatabank.saveComments(comments_list,"Comment.data");
 				} catch (IOException e1) {
 					// TODO 自动生成的 catch 块
 					e1.printStackTrace();
@@ -84,7 +93,7 @@ public class SelectDoc implements ActionListener{
 					e2.printStackTrace();
 				}
 				try {
-					tagdeal.saveTags(tags_list);
+					tagdeal.saveTags(tags_list,"Tag.txt");
 				} catch (IOException e2) {
 					// TODO 自动生成的 catch 块
 					e2.printStackTrace();

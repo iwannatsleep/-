@@ -40,6 +40,7 @@ import javax.swing.JComboBox;
 import control.CommentsDatabank;
 import control.TagDeal;
 import data.Comment;
+import data.Logs;
 import data.Tag;
 
 public class TagView extends  JPanel{;
@@ -53,6 +54,7 @@ public class TagView extends  JPanel{;
 	DefaultTableModel cmodel;
 	String selectedtagcla,selectedtag,selectedtaged,selectedcommentscla;
 	CommentsDatabank commentsdatabank=new CommentsDatabank();
+	Logs logwrite=new Logs();
 	TagView() throws IOException {
 		selectedID=-1;
 ////////读入数据
@@ -159,6 +161,13 @@ public class TagView extends  JPanel{;
 	    JMenuItem del=new JMenuItem("删除");
 	    del.addActionListener(new ActionListener(){
 	    	public void actionPerformed(ActionEvent e){
+	    		String log="删除标签类标签："+" "+selectedtagcla+" "+selectedtag;
+	    		try {
+	    			logwrite.writeLog(log);
+	    		} catch (IOException e3) {
+	    			// TODO 自动生成的 catch 块
+	    			e3.printStackTrace();
+	    		}
 	    		try {
 					TagDeal.delTag(tags,selectedtagcla,selectedtag);
 				} catch (IOException e1) {
@@ -180,8 +189,7 @@ public class TagView extends  JPanel{;
 	    	        	tagscombobox[i+1]=tagsclasschooselist.get(i);    //向下拉列表中添加一项
 	    	        for(int j=tagsclasschooselist.size();j<98;j++)
 	    	        	tagscombobox[j+1]="";
-	    	        tagclasseslist.setModel(new DefaultComboBoxModel<String>(tagscombobox));
-	    	       
+	    	        tagclasseslist.setModel(new DefaultComboBoxModel<String>(tagscombobox));	    	       
 	    		}
 	    	}
 	    	});
@@ -210,7 +218,6 @@ public class TagView extends  JPanel{;
 	    commentslist.addMouseListener(new MouseAdapter() {
 	    @Override
 	    public void mouseClicked(MouseEvent e) {
-	        
 	        if (SwingUtilities.isLeftMouseButton(e)) {
 	        	// 左键点击选取评论进行标注
 	            int row = commentslist.getSelectedRow();
@@ -225,7 +232,14 @@ public class TagView extends  JPanel{;
 	        	//右键点击进行删除
 	        	int row_delete = commentslist.getSelectedRow();
 	        	deleteID=(int) commentslist.getValueAt(row_delete, 0);
-	        	commentsdatabank.DeleteComment(comments_list,deleteID);
+	        	String log="删除评论："+" "+deleteID;
+	    		try {
+	    			logwrite.writeLog(log);
+	    		} catch (IOException e3) {
+	    			// TODO 自动生成的 catch 块
+	    			e3.printStackTrace();
+	    		}
+	        	commentsdatabank.DeleteComment(comments_list,deleteID,"Comment.data");
 	        	try {
 					TagDeal.delAllID(tags, deleteID);
 				} catch (IOException e1) {
@@ -315,18 +329,25 @@ public class TagView extends  JPanel{;
 	        	if(selectedID!=-1)
 	        	//如果已经选取了某一评论
 	        	{
+	        		String log="贴标签："+" "+"评论"+selectedID+" "+(String)selectedtagcla+" "+(String)taglist.getSelectedValue();
+		    		try {
+		    			logwrite.writeLog(log);
+		    		} catch (IOException e3) {
+		    			// TODO 自动生成的 catch 块
+		    			e3.printStackTrace();
+		    		}
 	        		try {
 						TagDeal.addID(tags,(String)selectedtagcla,(String)taglist.getSelectedValue(), selectedID);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-	        		commentsdatabank.ChangeTagedornot(comments_list, selectedID, 1);
+	        		commentsdatabank.ChangeTagedornot(comments_list, selectedID, 1,"Comment.data");
 	        		tmodel.clear();
 	        		for(int i=0;i<TagDeal.getTaged(tags, selectedID).size();i++){
 		            	tmodel.addElement(TagDeal.getTaged(tags, selectedID).get(i));
 		            } 
-	        		if(TagDeal.IsConflict(tags, selectedID)) {commentsdatabank.ChangeIstagconflict(comments_list, selectedID, 1);}
+	        		if(TagDeal.IsConflict(tags, selectedID)) {commentsdatabank.ChangeIstagconflict(comments_list, selectedID, 1,"Comment.data");}
 	        	}
 	        }
 	        if (SwingUtilities.isRightMouseButton(e)) {
@@ -359,6 +380,13 @@ public class TagView extends  JPanel{;
 						}
 					}
 				}
+				String log="增加标签类标签："+" "+tct.getText()+" "+tt.getText();
+	    		try {
+	    			logwrite.writeLog(log);
+	    		} catch (IOException e3) {
+	    			// TODO 自动生成的 catch 块
+	    			e3.printStackTrace();
+	    		}
 				if(flag==0) {
 					//若未存在此标签类,在标签类下拉栏中添加此标签类
 					//tclist.addItem(tct.getText());
@@ -409,17 +437,24 @@ public class TagView extends  JPanel{;
 	        	{
 	        		selectedtaged=(String)tagedlist.getSelectedValue();
 	        		String[] parts = selectedtaged.split(" ");
+	        		String log="删除已贴标签："+" 评论"+selectedID+" "+parts[0]+" "+parts[1];
+		    		try {
+		    			logwrite.writeLog(log);
+		    		} catch (IOException e3) {
+		    			// TODO 自动生成的 catch 块
+		    			e3.printStackTrace();
+		    		}
 	        		try {
-						TagDeal.delID(tags,parts[0],parts[1], selectedID);
+						TagDeal.delID(tags,parts[0],parts[1], selectedID,"Tag.txt");
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 	        		if(TagDeal.IsIDempty(tags,selectedID)==1) {
-	        			commentsdatabank.ChangeTagedornot(comments_list, selectedID, 0);
+	        			commentsdatabank.ChangeTagedornot(comments_list, selectedID, 0,"Comment.data");
 	        		}
 	        		if(!TagDeal.IsConflict(tags, selectedID)) {
-	        			commentsdatabank.ChangeIstagconflict(comments_list, selectedID, 0);
+	        			commentsdatabank.ChangeIstagconflict(comments_list, selectedID, 0,"Comment.data");
 	        		}
 	        		tmodel.clear();
 		            for(int i=0;i<TagDeal.getTaged(tags,selectedID).size();i++) {

@@ -107,7 +107,7 @@ public class TagDealTest {
 	}
 	
 	@Test
-	//
+	//将两个标签文件的标签类标签合并，存在tags_a中（不包括ID的ArrayList）测试
 	public void testTagClassMerge() {
 		ArrayList<Tag> data1=new ArrayList<Tag>();
 		ArrayList<Tag> data2=new ArrayList<Tag>();
@@ -126,11 +126,12 @@ public class TagDealTest {
 		data2.add(new Tag("认为涨跌","看跌",e));
 		data2.add(new Tag("是否持股","是",f));
 		method.TagClassMerge(data1,data2);
-		data1.size();
+		assertEquals("是否持股",data1.get(3).getTagClass());
+		assertEquals("是",data1.get(3).getTagName());
 	}
 	
 	@Test
-	//
+	//将两个标签文件的标签合并，存在tags_a中（包括ID的ArrayList）测试
 	public void testTagsMerge() {
 		ArrayList<Tag> data1=new ArrayList<Tag>();
 		ArrayList<Tag> data2=new ArrayList<Tag>();
@@ -169,22 +170,25 @@ public class TagDealTest {
 			method.TagsMerge(data1,data2,idchangelist[i][0],idchangelist[i][1]);
 			i++;
 		}
-		data1.size();
+		assertEquals(5,Integer.parseInt(data1.get(0).getID().get(4).toString()));
+		assertEquals(6,Integer.parseInt(data1.get(0).getID().get(5).toString()));
 	}
 
 	@Test
-	//
+	//判断同一个评论是否在同一个标签类里标注了多个，是则返回true，测试
 	public void testIsConflict() {
 		ArrayList<Tag> data1=new ArrayList<Tag>();
 		TagDeal method=new TagDeal();
 		//添加数据
 		ArrayList a=new ArrayList();a.add(0);a.add(1);a.add(2);a.add(3);
-		ArrayList b=new ArrayList();b.add(0);b.add(4);b.add(5);
+		ArrayList b=new ArrayList();b.add(0);b.add(2);b.add(5);
 		ArrayList c=new ArrayList();c.add(0);c.add(1);c.add(2);
 		data1.add(new Tag("认为涨跌","看涨",a));
 		data1.add(new Tag("认为涨跌","看跌",b));
 		data1.add(new Tag("是否广告","是",c));
-		boolean flag=method.IsConflict(data1,1);
-		data1.size();
+		boolean flag1=method.IsConflict(data1,1);
+		boolean flag2=method.IsConflict(data1,2);
+		assertFalse(flag1);
+		assertTrue(flag2);
 	}
 }

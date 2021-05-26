@@ -40,6 +40,7 @@ import javax.swing.JComboBox;
 import control.CommentsDatabank;
 import control.TagDeal;
 import data.Comment;
+import data.Logs;
 import data.Tag;
 
 public class TagView2 extends  JPanel{;
@@ -53,11 +54,12 @@ public class TagView2 extends  JPanel{;
 	DefaultTableModel cmodel;
 	String selectedtagcla,selectedtag,selectedtaged,selectedcommentscla;
 	CommentsDatabank commentsdatabank=new CommentsDatabank();
+	Logs logwrite=new Logs();
 	TagView2() throws IOException {
 		selectedID=-1;
 ////////读入数据
-		comments_list=commentsdatabank.readComments("Comment.data");
-		tags=TagDeal.readTags("Tag.txt");
+		comments_list=commentsdatabank.readComments("CommentMerge.data");
+		tags=TagDeal.readTags("TagMerge.txt");
 		if(tags.get(0).haveID(1)) {
 			String temp=tags.get(0).getTagClass()+"."+tags.get(0).getTagName();
 		}
@@ -146,11 +148,11 @@ public class TagView2 extends  JPanel{;
 	            	tmodel.addElement(TagDeal.getTaged(tags,selectedID).get(i));
 	            }
 	        }
-	        else if (SwingUtilities.isRightMouseButton(e)) {
+	        /*else if (SwingUtilities.isRightMouseButton(e)) {
 	        	//右键点击进行删除
 	        	int row_delete = commentslist.getSelectedRow();
 	        	deleteID=(int) commentslist.getValueAt(row_delete, 0);
-	        	commentsdatabank.DeleteComment(comments_list,deleteID);
+	        	commentsdatabank.DeleteComment(comments_list,deleteID,"CommentMerge.data");
 	        	try {
 					TagDeal.delAllID(tags, deleteID);
 				} catch (IOException e1) {
@@ -168,7 +170,7 @@ public class TagView2 extends  JPanel{;
 	        	cmodel.setDataVector(cData, cName);
 	        	txt.setText("");
 	        	tmodel.clear();
-	        }
+	        }*/
 	    } 
 	});
 	
@@ -227,17 +229,24 @@ public class TagView2 extends  JPanel{;
 	        	{
 	        		selectedtaged=(String)tagedlist.getSelectedValue();
 	        		String[] parts = selectedtaged.split(" ");
+	        		String log="删除已贴标签："+" 评论"+selectedID+" "+parts[0]+" "+parts[1];
+		    		try {
+		    			logwrite.writeLog(log);
+		    		} catch (IOException e3) {
+		    			// TODO 自动生成的 catch 块
+		    			e3.printStackTrace();
+		    		}
 	        		try {
-						TagDeal.delID(tags,parts[0],parts[1], selectedID);
+						TagDeal.delID(tags,parts[0],parts[1], selectedID,"TagMerge.txt");
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 	        		if(TagDeal.IsIDempty(tags,selectedID)==1) {
-	        			commentsdatabank.ChangeTagedornot(comments_list, selectedID, 0);
+	        			commentsdatabank.ChangeTagedornot(comments_list, selectedID, 0,"CommentMerge.data");
 	        		}
 	        		if(!TagDeal.IsConflict(tags, selectedID)) {
-	        			commentsdatabank.ChangeIstagconflict(comments_list, selectedID, 0);
+	        			commentsdatabank.ChangeIstagconflict(comments_list, selectedID, 0,"CommentMerge.data");
 	        		}
 	        		tmodel.clear();
 		            for(int i=0;i<TagDeal.getTaged(tags,selectedID).size();i++) {

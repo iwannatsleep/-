@@ -2,10 +2,13 @@ package view;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.awt.*;
 import javax.swing.*;
 
 import data.Comment;
+import data.Logs;
 import data.Tag;
 import control.CommentsDatabank;
 import control.TagDeal;
@@ -36,6 +39,7 @@ public class MergeDoc implements ActionListener{
     TagDeal tagdeal=new TagDeal();
     ArrayList<Tag> tags_list1=new ArrayList<Tag>();
     ArrayList<Tag> tags_list2=new ArrayList<Tag>();
+    Logs logwrite=new Logs();
     MergeDoc(){
         jfc1.setCurrentDirectory(new File("."));//文件选择器的初始目录定为项目根目录
         /*
@@ -82,6 +86,13 @@ public class MergeDoc implements ActionListener{
         btnOKButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		int i = 0;
+        		String log="合并多个评论标注文件数据:"+ " " + text2.getText()+ " " + text3.getText() + " " + text4.getText() + " " + text5.getText();
+        		try {
+					logwrite.writeLog(log);
+				} catch (IOException e3) {
+					// TODO 自动生成的 catch 块
+					e3.printStackTrace();
+				}
         		try {
         			comments_list1=commentsdatabank.readComments(text2.getText());
 				} catch (IOException e1) {
@@ -119,13 +130,13 @@ public class MergeDoc implements ActionListener{
 		        		}
 					}
 	        		try {
-						commentsdatabank.saveComments(comments_list1);
+						commentsdatabank.saveComments(comments_list1,"CommentMerge.data");
 					} catch (IOException e1) {
 						// TODO 自动生成的 catch 块
 						e1.printStackTrace();
 					};
 					try {
-						tagdeal.saveTags(tags_list1);
+						tagdeal.saveTags(tags_list1,"TagMerge.txt");
 					} catch (IOException e2) {
 						// TODO 自动生成的 catch 块
 						e2.printStackTrace();
