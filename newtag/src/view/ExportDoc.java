@@ -28,13 +28,18 @@ public class ExportDoc implements ActionListener{
     TagDeal tagdeal=new TagDeal();
     ArrayList<Tag> tags_list=new ArrayList<Tag>();
     Logs logwrite=new Logs();
+    String time,path;
+    String commentfilepath=".";
+    String tagfilepath=".";
+    String selecteditem="上次标注的文件";
     ExportDoc(){
 
         frame.setBounds(150, 150, 430, 220);//设定窗口大小位置
         frame.setContentPane(tabPane);
         label2.setBounds(10,38,100,20);
         text2.setBounds(101,38,120,20);
-        text2.setText("Comment.data");
+        FileSystemView fsv1 = FileSystemView.getFileSystemView();
+        text2.setText(fsv1.getHomeDirectory().getPath());
         button2.setBounds(220,38,50,20);
         btnOKButton.setBounds(287, 121, 97, 23);
         button2.addActionListener(this);
@@ -45,30 +50,65 @@ public class ExportDoc implements ActionListener{
         con.add(btnOKButton);
         tabPane.add("目录选择",con);
 ////下拉栏
-        JLabel commentschooselabel=new JLabel("选择数据:");    //创建标签
-        commentschooselabel.setBounds(10,88,100,20);
-        String[] commentscombobox= new String[2];
-        commentscombobox[0]="全部评论";
-        commentscombobox[1]="未标注评论";
-        JComboBox<String> commentschooselist=new JComboBox<String>(commentscombobox);    //创建JComboBox
-        commentschooselist.setBounds(101,88,120,20);
-        commentschooselist.setModel(new DefaultComboBoxModel<String>(commentscombobox));
-        con.add(commentschooselabel);
-        con.add(commentschooselist); 
-        
+        JLabel chooselabel=new JLabel("选择数据:");    //创建标签
+        chooselabel.setBounds(10,88,100,20);
+        String[] combobox= new String[2];
+        combobox[0]="上次标注的文件";
+        combobox[1]="上次合并的文件";
+        JComboBox<String> chooselist=new JComboBox<String>(combobox);    //创建JComboBox
+        chooselist.setBounds(101,88,120,20);
+        con.add(chooselabel);
+        con.add(chooselist); 
+////下拉栏响应
+        chooselist.addItemListener(new ItemListener() {
+    	    public void itemStateChanged(ItemEvent e) {
+    	        // 选取标签类后在下方列表显示此标签类的标签
+    	    	if(e.getStateChange()==ItemEvent.SELECTED){
+    	    		selecteditem=(String) e.getItem();
+    	    	}
+    	    }
+    	});
         btnOKButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		Calendar nowtime = new GregorianCalendar();
-        		String time=nowtime.get(Calendar.YEAR)+"_"+
+        		int flag=0;
+        		time=nowtime.get(Calendar.YEAR)+"_"+
         				nowtime.get(Calendar.MONTH)+"_" +
         				nowtime.get(Calendar.DATE)+"_" +
         				nowtime.get(Calendar.HOUR)+"_" +
         				nowtime.get(Calendar.MINUTE)+"_" +
         				nowtime.get(Calendar.SECOND)+"_" ;
-        		String path=text2.getText();
-        		String commentfilename=path+"\\"+"Comment_"+time+".data";
-        		String tagfilename=path+"\\"+"Tag_"+time+".txt";
-        		//comments_list=commentsdatabank.readComments(tagfilename);
+        		path=text2.getText();
+        		commentfilepath=path+"\\"+"Comment_"+time+".data";
+        		tagfilepath=path+"\\"+"Tag_"+time+".txt";
+        		if(selecteditem.equals("上次标注的文件")) {
+        			try {
+						comments_list=commentsdatabank.readComments("Comment.data");
+						tags_list=tagdeal.readTags("Tag.txt");
+						commentsdatabank.saveComments(comments_list, commentfilepath);
+						tagdeal.saveTags(tags_list, tagfilepath);
+						JOptionPane.showMessageDialog(null, "导出成功！");
+						flag=1;
+					} catch (IOException e1) {
+						// TODO 自动生成的 catch 块
+						e1.printStackTrace();
+					}
+        			
+	        	}
+	        	else if(selecteditem.equals("上次合并的文件")) {
+	        		try {
+	        		comments_list=commentsdatabank.readComments("CommentMerge.data");
+					tags_list=tagdeal.readTags("TagMerge.txt");
+					commentsdatabank.saveComments(comments_list, commentfilepath);
+					tagdeal.saveTags(tags_list, tagfilepath);
+					JOptionPane.showMessageDialog(null, "导出成功！");
+					flag=1;
+	        		} catch (IOException e2) {
+						// TODO 自动生成的 catch 块
+						e2.printStackTrace();
+					}
+	        	}
+        		if(flag==0) {JOptionPane.showMessageDialog(null, "导出失败！");}
 				frame.dispose();
         	}
         });
