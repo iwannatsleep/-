@@ -191,7 +191,7 @@ public class TagDeal {
     			temp=tag.getTagClass()+" "+tag.getTagName();
     			while(checklist[j][0]!=null) {
     				if(checklist[j][0].equals(tag.getTagClass())&&(!checklist[j][1].equals(tag.getTagName()))) {
-    					temp=temp+"            ³åÍ»";
+    					temp=temp+"                            ³åÍ»";
     					break;
     				}
     				j++;

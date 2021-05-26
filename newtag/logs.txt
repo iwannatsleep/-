@@ -26,3 +26,16 @@
 [2021/04/26 04:14:59.140]程序启动
 [2021/04/26 04:15:17.008]合并多个评论标注文件数据: E:\github\teamwork-group8\标签合并测试用例\Comment1.data E:\github\teamwork-group8\标签合并测试用例\Tag1.txt E:\github\teamwork-group8\标签合并测试用例\Comment2.data E:\github\teamwork-group8\标签合并测试用例\Tag2.txt
 [2021/04/26 04:22:11.886]程序启动
+[2021/04/26 04:31:45.985]程序启动
+[2021/04/26 04:32:03.565]合并多个评论标注文件数据: E:\github\teamwork-group8\标签合并测试用例\Comment1.data E:\github\teamwork-group8\标签合并测试用例\Tag1.txt E:\github\teamwork-group8\标签合并测试用例\Comment2.data E:\github\teamwork-group8\标签合并测试用例\Tag2.txt
+[2021/04/26 04:32:08.431]删除已贴标签： 评论5 认为涨跌 看涨
+[2021/04/26 04:32:13.267]删除已贴标签： 评论5 认为涨跌 中立
+[2021/04/26 04:32:48.153]程序启动
+[2021/04/26 04:33:04.744]合并多个评论标注文件数据: E:\github\teamwork-group8\标签合并测试用例\Comment1.data E:\github\teamwork-group8\标签合并测试用例\Tag1.txt E:\github\teamwork-group8\标签合并测试用例\Comment2.data E:\github\teamwork-group8\标签合并测试用例\Tag2.txt
+[2021/04/26 04:33:12.759]删除已贴标签： 评论5 认为涨跌 中立
+[2021/04/26 04:33:13.271]删除已贴标签： 评论5 认为涨跌 看跌
+[2021/04/26 04:36:06.456]程序启动
+[2021/04/26 04:36:22.773]程序启动
+[2021/04/26 04:36:32.324]程序启动
+[2021/04/26 04:37:58.954]程序启动
+[2021/04/26 04:38:16.386]程序启动

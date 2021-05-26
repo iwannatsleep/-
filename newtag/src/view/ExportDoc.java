@@ -83,6 +83,8 @@ public class ExportDoc implements ActionListener{
         		tagfilepath=path+"\\"+"Tag_"+time+".txt";
         		if(selecteditem.equals("上次标注的文件")) {
         			try {
+        				String log="数据导出:"+ " 上次标注的文件" + " " + path;
+        				logwrite.writeLog(log);
 						comments_list=commentsdatabank.readComments("Comment.data");
 						tags_list=tagdeal.readTags("Tag.txt");
 						commentsdatabank.saveComments(comments_list, commentfilepath);
@@ -97,12 +99,14 @@ public class ExportDoc implements ActionListener{
 	        	}
 	        	else if(selecteditem.equals("上次合并的文件")) {
 	        		try {
-	        		comments_list=commentsdatabank.readComments("CommentMerge.data");
-					tags_list=tagdeal.readTags("TagMerge.txt");
-					commentsdatabank.saveComments(comments_list, commentfilepath);
-					tagdeal.saveTags(tags_list, tagfilepath);
-					JOptionPane.showMessageDialog(null, "导出成功！");
-					flag=1;
+	        			String log="数据导出:"+ " 上次合并的文件" + " " + path;
+	        			logwrite.writeLog(log);
+		        		comments_list=commentsdatabank.readComments("CommentMerge.data");
+						tags_list=tagdeal.readTags("TagMerge.txt");
+						commentsdatabank.saveComments(comments_list, commentfilepath);
+						tagdeal.saveTags(tags_list, tagfilepath);
+						JOptionPane.showMessageDialog(null, "导出成功！");
+						flag=1;
 	        		} catch (IOException e2) {
 						// TODO 自动生成的 catch 块
 						e2.printStackTrace();
