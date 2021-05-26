@@ -110,7 +110,7 @@ public class TagView2 extends  JPanel{;
 		tagedlist=new JList(tmodel);
 		tagedlist = new JList(tmodel);
 		JScrollPane tagedscroll = new JScrollPane(tagedlist);
-		tagedscroll.setBounds(600, 50, 250, 350);
+		tagedscroll.setBounds(600, 50, 200, 350);
 		add(tagedscroll);
 
 
