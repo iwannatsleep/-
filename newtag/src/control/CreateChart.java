@@ -52,7 +52,7 @@ public class CreateChart extends  JPanel{
         //若传入标签类,则显示由此标签类中所有标签生成的统计图
        for(int i=0;i<number.length;i++) {
             //dataset.setValue("element",CommentToTag.getCommentnum(element));
-            dataset.setValue(tag[i],number[i]);     
+            dataset.setValue(tag[i],number[i]-1);     
         }
 		return dataset;
 }

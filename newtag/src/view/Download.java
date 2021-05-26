@@ -20,6 +20,7 @@ import javax.swing.border.EmptyBorder;
 
 import crawler.Crawler;
 import data.Comment;
+import data.Logs;
 import data.Tag;
 import control.CommentsDatabank;
 import control.TagDeal;
@@ -32,6 +33,7 @@ public class Download extends JFrame {
 	private JTextField textField;
 	public Crawler crawler;
 	JFrame frame=new JFrame("下载股票");
+	Logs logwrite=new Logs();
 
 	/**
 	 * Create the frame.
@@ -63,6 +65,13 @@ public class Download extends JFrame {
 					Downloading test=new Downloading();
 					test.setSymbol(symbol);
 					frame.dispose();
+					String log="下载股评数据:"+ " " + symbol;
+	        		try {
+						logwrite.writeLog(log);
+					} catch (IOException e3) {
+						// TODO 自动生成的 catch 块
+						e3.printStackTrace();
+					}
 					}
 				else textField.setText("输入有误，请重新输入！");
 

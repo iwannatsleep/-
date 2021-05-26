@@ -17,14 +17,14 @@ public class TagDeal {
     	ArrayList empty= new ArrayList();
     	empty.add(0);
         tags.add(new Tag(TagClass,TagName,empty));
-        saveTags(tags);
+        saveTags(tags,"Tag.txt");
         return tags;   
     }   
     
     // 保存 Tag 对象到文件。保存格式为：   
     // 1、每个 Tag 一行   
     // 2、每行依次存放 TagClass,TagName,ID 三个属性值，用 tab 隔开,ID不同元素间用逗号隔开
-    public static void saveTags( ArrayList<Tag> tags) throws IOException {   
+    public static void saveTags( ArrayList<Tag> tags,String filename) throws IOException {   
     
         // 生成文件内容   
         String data = "";   
@@ -103,18 +103,18 @@ public class TagDeal {
         		 break;
         	 }
          } 
-         saveTags(tags);
+         saveTags(tags,"Tag.txt");
     }
     
     //删除被此评论标注的ID
-    public static void delID(ArrayList<Tag> tags,String tagclass,String tagname,int ID) throws IOException{
+    public static void delID(ArrayList<Tag> tags,String tagclass,String tagname,int ID,String filename) throws IOException{
         for (Tag tag : tags) {   
         	if(tag.getTagClass().equals(tagclass) && tag.getTagName().equals(tagname)) {
         		tag.removeID(ID);
         		break;
         	}
         } 
-        saveTags(tags);
+        saveTags(tags,filename);
     }
     
     //删除某一标签
@@ -125,7 +125,7 @@ public class TagDeal {
         		break;
         	}
         } 
-        saveTags(tags);
+        saveTags(tags,"Tag.txt");
     }
     
   //获取所有标签类
@@ -174,12 +174,30 @@ public class TagDeal {
     
     //获取标注此评论的所有标签
     public static ArrayList<String> getTaged(ArrayList<Tag> tags,int ID) {
+    	String[][] checklist=new String[1000][2];
     	ArrayList<String> taged= new ArrayList<String>();
     	String temp;
+    	int i = 0;
+    	int j = 0;
     	for(Tag tag : tags) {
     		if(tag.haveID(ID)) {
-    			temp=tag.getTagClass()+":"+tag.getTagName();
+    			checklist[i][0]=tag.getTagClass();
+    			checklist[i][1]=tag.getTagName();
+    			i++;
+    		}
+        }
+    	for(Tag tag : tags) {
+    		if(tag.haveID(ID)) {
+    			temp=tag.getTagClass()+" "+tag.getTagName();
+    			while(checklist[j][0]!=null) {
+    				if(checklist[j][0].equals(tag.getTagClass())&&(!checklist[j][1].equals(tag.getTagName()))) {
+    					temp=temp+"            冲突";
+    					break;
+    				}
+    				j++;
+    			}
     			taged.add(temp);
+    			j = 0;
     		}
         }
     	return taged;
@@ -203,7 +221,7 @@ public class TagDeal {
         		tag.removeID(ID);
         	}
         } 
-        saveTags(tags);
+        saveTags(tags,"Tag.txt");
     }
     
   //返回该评论是否被标签标注(xinhanrui)
@@ -225,7 +243,7 @@ public class TagDeal {
     	for(String tagclass : alltagclass) {
     		alltag=getAllTagString(tags,tagclass);
     		for(int i=0;i<alltag.size();i++) {
-    		tagandclass.add(tagclass + ":" + alltag.get(i));
+    		tagandclass.add(tagclass + " " + alltag.get(i));
     		}
     	}
 		return tagandclass;
@@ -242,6 +260,63 @@ public class TagDeal {
     		}
     	}
     	return tagIDs;
+    }
+    
+    //将两个标签文件的标签类标签合并，存在tags_a中（不包括ID的ArrayList）(xinhanrui)
+    public static void TagClassMerge(ArrayList<Tag> tags_a,ArrayList<Tag> tags_b) {
+    	boolean flag;
+    	for(Tag tag_b:tags_b) {
+    		flag=true;
+    		for(Tag tag_a:tags_a) {
+    			if(tag_a.getTagClass().equals(tag_b.getTagClass()) && tag_a.getTagName().equals(tag_b.getTagName())) {
+    				flag=false;
+    			}
+    		}
+    		if(flag) {
+    			ArrayList a=new ArrayList();a.add(0);
+    			tags_a.add(new Tag(tag_b.getTagClass(),tag_b.getTagName(),a));
+    		}
+    	}
+    }
+    
+    //将两个标签文件的标签合并，存在tags_a中（包括ID的ArrayList）(xinhanrui)
+    public static void TagsMerge(ArrayList<Tag> tags_a,ArrayList<Tag> tags_b,int IDA,int IDB) {
+    	ArrayList<String> idstring=getTaged(tags_b,IDB);
+    	for(int i=0;i<idstring.size();i++) {
+    		String[] parts = idstring.get(i).split(" ");
+    		try {
+				addID(tags_a,parts[0],parts[1], IDA);
+			} catch (IOException e) {
+				// TODO 自动生成的 catch 块
+				e.printStackTrace();
+			}
+    	}
+    }
+    
+    //判断同一个评论是否在同一个标签类里标注了多个，是则返回true(xinhanrui)
+    public static boolean IsConflict(ArrayList<Tag> tags,int ID) {
+    	String[][] checklist=new String[1000][2];
+    	int i = 0;
+    	int j = 0;
+    	for(Tag tag : tags) {
+    		if(tag.haveID(ID)) {
+    			checklist[i][0]=tag.getTagClass();
+    			checklist[i][1]=tag.getTagName();
+    			i++;
+    		}
+        }
+    	for(Tag tag : tags) {
+    		if(tag.haveID(ID)) {
+    			while(checklist[j][0]!=null) {
+    				if(checklist[j][0].equals(tag.getTagClass())&&(!checklist[j][1].equals(tag.getTagName()))) {
+    					return true;
+    				}
+    				j++;
+    			}
+    			j = 0;
+    		}
+        }
+    	return false;
     }
     
 	public static void main(String[] args) throws IOException {

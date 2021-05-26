@@ -9,6 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import data.Comment;
 import data.Tag;
 
 public class TagDealTest {
@@ -86,8 +87,8 @@ public class TagDealTest {
 		data.add(new Tag("认为涨跌","看涨",a));
 		data.add(new Tag("是否广告","是",a));
 		ArrayList<String> result=method.getAllTagandClass(data);
-		assertEquals("认为涨跌:看涨",result.get(0));
-		assertEquals("是否广告:是",result.get(1));
+		assertEquals("认为涨跌 看涨",result.get(0));
+		assertEquals("是否广告 是",result.get(1));
 	}
 
 	@Test
@@ -104,5 +105,90 @@ public class TagDealTest {
 		assertEquals(1,Integer.parseInt(result.get(0).toString()));
 		assertEquals(3,Integer.parseInt(result.get(1).toString()));
 	}
+	
+	@Test
+	//将两个标签文件的标签类标签合并，存在tags_a中（不包括ID的ArrayList）测试
+	public void testTagClassMerge() {
+		ArrayList<Tag> data1=new ArrayList<Tag>();
+		ArrayList<Tag> data2=new ArrayList<Tag>();
+		TagDeal method=new TagDeal();
+		//添加数据
+		ArrayList a=new ArrayList();a.add(0);a.add(1);a.add(2);a.add(3);
+		ArrayList b=new ArrayList();b.add(0);b.add(4);b.add(5);
+		ArrayList c=new ArrayList();c.add(0);c.add(1);c.add(2);
+		ArrayList d=new ArrayList();d.add(0);d.add(4);d.add(5);
+		ArrayList e=new ArrayList();e.add(0);e.add(1);e.add(2);e.add(3);
+		ArrayList f=new ArrayList();f.add(0);f.add(1);f.add(2);
+		data1.add(new Tag("认为涨跌","看涨",a));
+		data1.add(new Tag("认为涨跌","看跌",b));
+		data1.add(new Tag("是否广告","是",c));
+		data2.add(new Tag("认为涨跌","看涨",d));
+		data2.add(new Tag("认为涨跌","看跌",e));
+		data2.add(new Tag("是否持股","是",f));
+		method.TagClassMerge(data1,data2);
+		assertEquals("是否持股",data1.get(3).getTagClass());
+		assertEquals("是",data1.get(3).getTagName());
+	}
+	
+	@Test
+	//将两个标签文件的标签合并，存在tags_a中（包括ID的ArrayList）测试
+	public void testTagsMerge() {
+		ArrayList<Tag> data1=new ArrayList<Tag>();
+		ArrayList<Tag> data2=new ArrayList<Tag>();
+		TagDeal method=new TagDeal();
+		//Tags添加数据
+		ArrayList a=new ArrayList();a.add(0);a.add(1);a.add(2);a.add(3);
+		ArrayList b=new ArrayList();b.add(0);b.add(4);b.add(5);
+		ArrayList c=new ArrayList();c.add(0);c.add(1);c.add(2);
+		ArrayList d=new ArrayList();d.add(0);d.add(4);d.add(5);
+		ArrayList e=new ArrayList();e.add(0);e.add(1);e.add(2);e.add(3);
+		ArrayList f=new ArrayList();f.add(0);f.add(1);f.add(2);
+		data1.add(new Tag("认为涨跌","看涨",a));
+		data1.add(new Tag("认为涨跌","看跌",b));
+		data1.add(new Tag("是否广告","是",c));
+		data2.add(new Tag("认为涨跌","看涨",d));
+		data2.add(new Tag("认为涨跌","看跌",e));
+		data2.add(new Tag("是否持股","是",f));
+		//Comment添加数据
+		CommentsDatabank commentsdatabank = new CommentsDatabank();
+		ArrayList<Comment> comments_test_list_a=new ArrayList<Comment>();
+		comments_test_list_a.add(new Comment(1,"评论1","SH600519",false,false));
+		comments_test_list_a.add(new Comment(2,"评论2","SH600519",false,false));
+		comments_test_list_a.add(new Comment(3,"评论3","SH600519",false,false));
+		comments_test_list_a.add(new Comment(4,"评论4","SH600519",false,false));
+		comments_test_list_a.add(new Comment(5,"评论5","SH600519",false,false));
+		ArrayList<Comment> comments_test_list_b=new ArrayList<Comment>();
+		comments_test_list_b.add(new Comment(1,"评论2","SH600519",false,false));
+		comments_test_list_b.add(new Comment(2,"评论3","SH600519",false,false));
+		comments_test_list_b.add(new Comment(3,"评论4","SH600519",false,false));
+		comments_test_list_b.add(new Comment(4,"评论5","SH600519",false,false));
+		comments_test_list_b.add(new Comment(5,"评论6","SH600519",false,false));
+		int[][] idchangelist=commentsdatabank.IdChangeList(comments_test_list_a, comments_test_list_b);
+		method.TagClassMerge(data1,data2);
+		int i=0;
+		while(idchangelist[i][0]!=0) {
+			method.TagsMerge(data1,data2,idchangelist[i][0],idchangelist[i][1]);
+			i++;
+		}
+		assertEquals(5,Integer.parseInt(data1.get(0).getID().get(4).toString()));
+		assertEquals(6,Integer.parseInt(data1.get(0).getID().get(5).toString()));
+	}
 
+	@Test
+	//判断同一个评论是否在同一个标签类里标注了多个，是则返回true，测试
+	public void testIsConflict() {
+		ArrayList<Tag> data1=new ArrayList<Tag>();
+		TagDeal method=new TagDeal();
+		//添加数据
+		ArrayList a=new ArrayList();a.add(0);a.add(1);a.add(2);a.add(3);
+		ArrayList b=new ArrayList();b.add(0);b.add(2);b.add(5);
+		ArrayList c=new ArrayList();c.add(0);c.add(1);c.add(2);
+		data1.add(new Tag("认为涨跌","看涨",a));
+		data1.add(new Tag("认为涨跌","看跌",b));
+		data1.add(new Tag("是否广告","是",c));
+		boolean flag1=method.IsConflict(data1,1);
+		boolean flag2=method.IsConflict(data1,2);
+		assertFalse(flag1);
+		assertTrue(flag2);
+	}
 }

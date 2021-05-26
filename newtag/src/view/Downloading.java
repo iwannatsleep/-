@@ -78,9 +78,10 @@ public class Downloading extends JFrame {
 				}
 				CommentsDatabank comments_databank=new CommentsDatabank();
 				ArrayList<Comment> comments_list=crawler.getCommentslist();
+				if(comments_list.size()==0) {comments_list.add(new Comment(1,"无数据","SH000000",false,false));}
 				comments_databank.setCommentslist(comments_list);
 				try {
-					comments_databank.saveComments(comments_list);
+					comments_databank.saveComments(comments_list,"Comment.data");
 				} catch (IOException e1) {
 					// TODO 自动生成的 catch 块
 					e1.printStackTrace();
@@ -94,7 +95,7 @@ public class Downloading extends JFrame {
 				tags_list.add(new Tag("是否广告","是",a));
 				tags_list.add(new Tag("是否广告","否",a));
 				try {
-					TagDeal.saveTags(tags_list);
+					TagDeal.saveTags(tags_list,"Tag.txt");
 				} catch (IOException e2) {
 					// TODO 自动生成的 catch 块
 					e2.printStackTrace();
