@@ -169,7 +169,7 @@ public class TagView extends  JPanel{;
 	    			e3.printStackTrace();
 	    		}
 	    		try {
-					TagDeal.delTag(tags,selectedtagcla,selectedtag);
+					TagDeal.delTag(tags,selectedtagcla,selectedtag,"Tag.txt");
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -241,7 +241,7 @@ public class TagView extends  JPanel{;
 	    		}
 	        	commentsdatabank.DeleteComment(comments_list,deleteID,"Comment.data");
 	        	try {
-					TagDeal.delAllID(tags, deleteID);
+					TagDeal.delAllID(tags, deleteID,"Tag.txt");
 				} catch (IOException e1) {
 					// TODO 自动生成的 catch 块
 					e1.printStackTrace();
@@ -337,7 +337,7 @@ public class TagView extends  JPanel{;
 		    			e3.printStackTrace();
 		    		}
 	        		try {
-						TagDeal.addID(tags,(String)selectedtagcla,(String)taglist.getSelectedValue(), selectedID);
+						TagDeal.addID(tags,(String)selectedtagcla,(String)taglist.getSelectedValue(), selectedID,"Tag.txt");
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -391,7 +391,7 @@ public class TagView extends  JPanel{;
 					//若未存在此标签类,在标签类下拉栏中添加此标签类
 					//tclist.addItem(tct.getText());
 					try {
-						TagDeal.createTags(tags,tct.getText(),tt.getText());
+						TagDeal.createTags(tags,tct.getText(),tt.getText(),"Tag.txt");
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -408,7 +408,7 @@ public class TagView extends  JPanel{;
 				}
 				else if(flag==1) {
 					try {
-						TagDeal.createTags(tags,tct.getText(),tt.getText());
+						TagDeal.createTags(tags,tct.getText(),tt.getText(),"Tag.txt");
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();

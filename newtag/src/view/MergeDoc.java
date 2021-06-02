@@ -113,7 +113,7 @@ public class MergeDoc implements ActionListener{
 						idchangelist=commentsdatabank.IdChangeList(comments_list1, comments_list2);
 						tagdeal.TagClassMerge(tags_list1, tags_list2);
 						while(idchangelist[i][0]!=0) {
-							tagdeal.TagsMerge(tags_list1, tags_list2, idchangelist[i][0], idchangelist[i][1]);
+							tagdeal.TagsMerge(tags_list1, tags_list2, idchangelist[i][0], idchangelist[i][1],"TagMerge.txt");
 							i++;
 						}
 						for(Comment comment:comments_list1) {

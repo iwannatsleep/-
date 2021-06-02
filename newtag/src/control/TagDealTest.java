@@ -50,7 +50,7 @@ public class TagDealTest {
 		data.add(new Tag("是否广告","是",a));
 		//删除所有标签列表中ID为4的项
 		try {
-			method.delAllID(data,4);
+			method.delAllID(data,4,"Tag.txt");
 		} catch (IOException e) {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();
@@ -167,7 +167,7 @@ public class TagDealTest {
 		method.TagClassMerge(data1,data2);
 		int i=0;
 		while(idchangelist[i][0]!=0) {
-			method.TagsMerge(data1,data2,idchangelist[i][0],idchangelist[i][1]);
+			method.TagsMerge(data1,data2,idchangelist[i][0],idchangelist[i][1],"TagMerge.txt");
 			i++;
 		}
 		assertEquals(5,Integer.parseInt(data1.get(0).getID().get(4).toString()));
