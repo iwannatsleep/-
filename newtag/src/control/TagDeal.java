@@ -13,11 +13,11 @@ public class TagDeal {
     static String filename = "Tag.txt";
 
     // 创建要保存的 Person 对象   
-    public static  ArrayList<Tag> createTags( ArrayList<Tag> tags,String TagClass,String TagName) throws IOException {   
+    public static  ArrayList<Tag> createTags( ArrayList<Tag> tags,String TagClass,String TagName,String filename) throws IOException {   
     	ArrayList empty= new ArrayList();
     	empty.add(0);
         tags.add(new Tag(TagClass,TagName,empty));
-        saveTags(tags,"Tag.txt");
+        saveTags(tags,filename);
         return tags;   
     }   
     
@@ -96,14 +96,14 @@ public class TagDeal {
     }
 
     //添加被此标签标注的评论ID
-    public static void addID(ArrayList<Tag> tags,String tagclass,String tagname,int ID) throws IOException{    	   	 
+    public static void addID(ArrayList<Tag> tags,String tagclass,String tagname,int ID,String filename) throws IOException{    	   	 
          for (Tag tag : tags) {   
         	 if(tag.getTagClass().equals(tagclass) && tag.getTagName().equals(tagname) && !tag.haveID(ID)) {
         		 tag.addID(ID);
         		 break;
         	 }
          } 
-         saveTags(tags,"Tag.txt");
+         saveTags(tags,filename);
     }
     
     //删除被此评论标注的ID
@@ -118,14 +118,14 @@ public class TagDeal {
     }
     
     //删除某一标签
-    public static void delTag(ArrayList<Tag> tags,String tagclass,String tagname) throws IOException {
+    public static void delTag(ArrayList<Tag> tags,String tagclass,String tagname,String filename) throws IOException {
         for (Tag tag : tags) {   
         	if(tag.getTagClass().equals(tagclass) && tag.getTagName().equals(tagname)) {
         		tags.remove(tag);
         		break;
         	}
         } 
-        saveTags(tags,"Tag.txt");
+        saveTags(tags,filename);
     }
     
   //获取所有标签类
@@ -215,13 +215,13 @@ public class TagDeal {
     }
     
 	//测试删除所有标签列表中指定ID(xinhanrui)
-    public static void delAllID(ArrayList<Tag> tags,int ID) throws IOException{
+    public static void delAllID(ArrayList<Tag> tags,int ID,String filename) throws IOException{
         for (Tag tag : tags) {   
         	if(tag.haveID(ID)) {
         		tag.removeID(ID);
         	}
         } 
-        saveTags(tags,"Tag.txt");
+        saveTags(tags,filename);
     }
     
   //返回该评论是否被标签标注(xinhanrui)
@@ -280,12 +280,12 @@ public class TagDeal {
     }
     
     //将两个标签文件的标签合并，存在tags_a中（包括ID的ArrayList）(xinhanrui)
-    public static void TagsMerge(ArrayList<Tag> tags_a,ArrayList<Tag> tags_b,int IDA,int IDB) {
+    public static void TagsMerge(ArrayList<Tag> tags_a,ArrayList<Tag> tags_b,int IDA,int IDB,String filename) {
     	ArrayList<String> idstring=getTaged(tags_b,IDB);
     	for(int i=0;i<idstring.size();i++) {
     		String[] parts = idstring.get(i).split(" ");
     		try {
-				addID(tags_a,parts[0],parts[1], IDA);
+				addID(tags_a,parts[0],parts[1], IDA,filename);
 			} catch (IOException e) {
 				// TODO 自动生成的 catch 块
 				e.printStackTrace();
@@ -321,6 +321,6 @@ public class TagDeal {
     
 	public static void main(String[] args) throws IOException {
 		ArrayList<Tag> tags = new ArrayList<Tag>();
-		 tags=readTags("Tag.txt");
+		 //tags=readTags("Tag.txt");
 	}
  } 

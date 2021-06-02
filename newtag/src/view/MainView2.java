@@ -125,6 +125,12 @@ public class MainView2 extends JFrame {
 				// 调用评论标注函数
 				if(flag==2) {frame.remove(chartpanel);}
 				if(flag==3) {frame.remove(tagpanel2);}
+				try {
+					tagpanel=new TagView();
+				} catch (IOException e1) {
+					// TODO 自动生成的 catch 块
+					e1.printStackTrace();
+				}
 				frame.add(tagpanel);
 				flag=1;
 						//contentpanel=new TagView();
