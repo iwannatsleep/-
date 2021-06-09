@@ -77,7 +77,7 @@ public class CommentsDatabankTest {
 		for(Comment comment : comments_test_list) {
 			assertEquals(1,comment.getId());//判断是否有ID为1的评论
 		}
-		commentsdatabank.DeleteComment(comments_test_list,1,"Comment.data");//删除ID为1的评论
+		commentsdatabank.deleteComment(comments_test_list,1,"Comment.data");//删除ID为1的评论
 		for(Comment comment : comments_test_list) {
 			assertNotEquals(1,comment.getId());//判断是否有ID为1的评论
 		}
@@ -94,8 +94,8 @@ public class CommentsDatabankTest {
 			if(comment.getId()==2) {assertTrue(comment.getTagedornot());}//判断原本是否为true
 			if(comment.getId()==1) {assertFalse(comment.getTagedornot());}//判断原本是否为false
 		}
-		commentsdatabank.ChangeTagedornot(comments_test_list,1,1,"Comment.data");//置true
-		commentsdatabank.ChangeTagedornot(comments_test_list,2,0,"Comment.data");//置false
+		commentsdatabank.changeTagedornot(comments_test_list,1,1,"Comment.data");//置true
+		commentsdatabank.changeTagedornot(comments_test_list,2,0,"Comment.data");//置false
 		for(Comment comment : comments_test_list) {
 			if(comment.getId()==2) {assertFalse(comment.getTagedornot());}//判断更改后是否为false
 			if(comment.getId()==1) {assertTrue(comment.getTagedornot());}//判断更改后是否为true
@@ -122,7 +122,7 @@ public class CommentsDatabankTest {
 		ArrayList<Comment> comments_test_list=new ArrayList<Comment>();
 		comments_test_list.add(new Comment(1,"评论1","SH600519",false,false));//添加一条tagedornot位为false的评论
 		comments_test_list.add(new Comment(2,"评论2","SH600519",true,false));//添加一条tagedornot位为true的评论
-		ArrayList<Comment> test_list=commentsdatabank.TagedComments(comments_test_list);//已标注的评论列表
+		ArrayList<Comment> test_list=commentsdatabank.tagedComments(comments_test_list);//已标注的评论列表
 		for(Comment comment : test_list) {
 			assertTrue(comment.getTagedornot());//判断返回列表的标志位是否为true
 		}
@@ -155,7 +155,7 @@ public class CommentsDatabankTest {
 		comments_test_list_b.add(new Comment(3,"评论4","SH600519",false,false));
 		comments_test_list_b.add(new Comment(4,"评论5","SH600519",false,false));
 		comments_test_list_b.add(new Comment(5,"评论6","SH600519",false,false));
-		int[][] idchangelist=commentsdatabank.IdChangeList(comments_test_list_a, comments_test_list_b);
+		int[][] idchangelist=commentsdatabank.idChangeList(comments_test_list_a, comments_test_list_b);
 		assertEquals(6,comments_test_list_a.get(5).getId());
 		assertEquals("评论6",comments_test_list_a.get(5).getText());
 	}
@@ -171,8 +171,8 @@ public class CommentsDatabankTest {
 			if(comment.getId()==2) {assertTrue(comment.getIsconflict());}//判断原本是否为true
 			if(comment.getId()==1) {assertFalse(comment.getIsconflict());}//判断原本是否为false
 		}
-		commentsdatabank.ChangeIstagconflict(comments_test_list,1,1,"Comment.data");//置true
-		commentsdatabank.ChangeIstagconflict(comments_test_list,2,0,"Comment.data");//置false
+		commentsdatabank.changeIstagconflict(comments_test_list,1,1,"Comment.data");//置true
+		commentsdatabank.changeIstagconflict(comments_test_list,2,0,"Comment.data");//置false
 		for(Comment comment : comments_test_list) {
 			if(comment.getId()==2) {assertFalse(comment.getIsconflict());}//判断更改后是否为false
 			if(comment.getId()==1) {assertTrue(comment.getIsconflict());}//判断更改后是否为true
@@ -186,7 +186,7 @@ public class CommentsDatabankTest {
 		ArrayList<Comment> comments_test_list=new ArrayList<Comment>();
 		comments_test_list.add(new Comment(1,"评论1","SH600519",false,false));//添加一条isconflict位为false的评论
 		comments_test_list.add(new Comment(2,"评论2","SH600519",false,true));//添加一条isconflict位为true的评论
-		ArrayList<Comment> test_list=commentsdatabank.ConflictComments(comments_test_list);//已标注的评论列表
+		ArrayList<Comment> test_list=commentsdatabank.conflictComments(comments_test_list);//已标注的评论列表
 		for(Comment comment : test_list) {
 			assertTrue(comment.getIsconflict());//判断返回列表的标志位是否为true
 		}

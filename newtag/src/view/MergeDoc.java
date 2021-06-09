@@ -110,14 +110,14 @@ public class MergeDoc implements ActionListener{
 							// TODO 自动生成的 catch 块
 							e2.printStackTrace();
 						}
-						idchangelist=commentsdatabank.IdChangeList(comments_list1, comments_list2);
-						tagdeal.TagClassMerge(tags_list1, tags_list2);
+						idchangelist=commentsdatabank.idChangeList(comments_list1, comments_list2);
+						tagdeal.tagClassMerge(tags_list1, tags_list2);
 						while(idchangelist[i][0]!=0) {
-							tagdeal.TagsMerge(tags_list1, tags_list2, idchangelist[i][0], idchangelist[i][1],"TagMerge.txt");
+							tagdeal.tagsMerge(tags_list1, tags_list2, idchangelist[i][0], idchangelist[i][1],"TagMerge.txt");
 							i++;
 						}
 						for(Comment comment:comments_list1) {
-							if(TagDeal.IsConflict(tags_list1, comment.getId())) {
+							if(TagDeal.isConflict(tags_list1, comment.getId())) {
 			        			comment.setIsconflict(true);
 			        		}
 						}

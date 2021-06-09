@@ -60,7 +60,7 @@ public class CommentsDatabank {
         return result;   
     }
     //删除评论
-    public void DeleteComment(ArrayList<Comment> comments,int id,String filename) {
+    public void deleteComment(ArrayList<Comment> comments,int id,String filename) {
     	if(id>0) {
 	    	for (Comment comment : comments) {
 	    		if(comment.getId()==id) {
@@ -77,7 +77,7 @@ public class CommentsDatabank {
 		}
     }
     //标志tagedornot位,传入bool=1置为true,传入其他数值置为false
-    public void ChangeTagedornot(ArrayList<Comment> comments,int id,int bool,String filename) {
+    public void changeTagedornot(ArrayList<Comment> comments,int id,int bool,String filename) {
     	if(id>0) {
 	    	for (Comment comment : comments) {
 	    		if(comment.getId()==id) {
@@ -106,7 +106,7 @@ public class CommentsDatabank {
     }
     
   //返回以列表形式返回已标注的评论
-    public ArrayList<Comment> TagedComments(ArrayList<Comment> comments){
+    public ArrayList<Comment> tagedComments(ArrayList<Comment> comments){
     	ArrayList<Comment> tagedcomments=new ArrayList<Comment>();
     	for(Comment comment : comments) {
     		if(comment.getTagedornot()) {
@@ -129,7 +129,7 @@ public class CommentsDatabank {
     }
     
     //合并两个评论文件，内容相同的合并作为一项
-    public int[][] IdChangeList(ArrayList<Comment> a_commentslist,ArrayList<Comment> b_commentslist){
+    public int[][] idChangeList(ArrayList<Comment> a_commentslist,ArrayList<Comment> b_commentslist){
     	int[][] idchangelist=new int[10000][2];
     	int i=0;
     	int j=0;
@@ -161,7 +161,7 @@ public class CommentsDatabank {
     }
     
     //标志istagconflict位,传入bool=1置为true,传入其他数值置为false
-    public void ChangeIstagconflict(ArrayList<Comment> comments,int id,int bool,String filename) {
+    public void changeIstagconflict(ArrayList<Comment> comments,int id,int bool,String filename) {
     	if(id>0) {
 	    	for (Comment comment : comments) {
 	    		if(comment.getId()==id) {
@@ -190,7 +190,7 @@ public class CommentsDatabank {
     }
     
   //返回以列表形式返回标注有冲突的评论
-    public ArrayList<Comment> ConflictComments(ArrayList<Comment> comments){
+    public ArrayList<Comment> conflictComments(ArrayList<Comment> comments){
     	ArrayList<Comment> conflictcomments=new ArrayList<Comment>();
     	for(Comment comment : comments) {
     		if(comment.getIsconflict()) {

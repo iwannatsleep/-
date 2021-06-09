@@ -239,7 +239,7 @@ public class TagView extends  JPanel{;
 	    			// TODO 自动生成的 catch 块
 	    			e3.printStackTrace();
 	    		}
-	        	commentsdatabank.DeleteComment(comments_list,deleteID,"Comment.data");
+	        	commentsdatabank.deleteComment(comments_list,deleteID,"Comment.data");
 	        	try {
 					TagDeal.delAllID(tags, deleteID,"Tag.txt");
 				} catch (IOException e1) {
@@ -290,10 +290,10 @@ public class TagView extends  JPanel{;
 	        		comments_show_list=commentsdatabank.unTagedComments(comments_list); 
 	        	}
 	        	else if(selectedcommentscla.equals("已标注评论")) {
-	        		comments_show_list=commentsdatabank.TagedComments(comments_list);
+	        		comments_show_list=commentsdatabank.tagedComments(comments_list);
 	        	}
 	        	else if(selectedcommentscla.equals("标注有冲突评论")) {
-	        		comments_show_list=commentsdatabank.ConflictComments(comments_list);
+	        		comments_show_list=commentsdatabank.conflictComments(comments_list);
 	        	}
 	        	else {
 	        		String[] parts = selectedcommentscla.split(" ");
@@ -342,12 +342,12 @@ public class TagView extends  JPanel{;
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-	        		commentsdatabank.ChangeTagedornot(comments_list, selectedID, 1,"Comment.data");
+	        		commentsdatabank.changeTagedornot(comments_list, selectedID, 1,"Comment.data");
 	        		tmodel.clear();
 	        		for(int i=0;i<TagDeal.getTaged(tags, selectedID).size();i++){
 		            	tmodel.addElement(TagDeal.getTaged(tags, selectedID).get(i));
 		            } 
-	        		if(TagDeal.IsConflict(tags, selectedID)) {commentsdatabank.ChangeIstagconflict(comments_list, selectedID, 1,"Comment.data");}
+	        		if(TagDeal.isConflict(tags, selectedID)) {commentsdatabank.changeIstagconflict(comments_list, selectedID, 1,"Comment.data");}
 	        	}
 	        }
 	        if (SwingUtilities.isRightMouseButton(e)) {
@@ -450,11 +450,11 @@ public class TagView extends  JPanel{;
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-	        		if(TagDeal.IsIDempty(tags,selectedID)==1) {
-	        			commentsdatabank.ChangeTagedornot(comments_list, selectedID, 0,"Comment.data");
+	        		if(TagDeal.isIDempty(tags,selectedID)==1) {
+	        			commentsdatabank.changeTagedornot(comments_list, selectedID, 0,"Comment.data");
 	        		}
-	        		if(!TagDeal.IsConflict(tags, selectedID)) {
-	        			commentsdatabank.ChangeIstagconflict(comments_list, selectedID, 0,"Comment.data");
+	        		if(!TagDeal.isConflict(tags, selectedID)) {
+	        			commentsdatabank.changeIstagconflict(comments_list, selectedID, 0,"Comment.data");
 	        		}
 	        		tmodel.clear();
 		            for(int i=0;i<TagDeal.getTaged(tags,selectedID).size();i++) {

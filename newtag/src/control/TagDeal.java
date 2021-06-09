@@ -26,7 +26,16 @@ public class TagDeal {
     // 2、每行依次存放 TagClass,TagName,ID 三个属性值，用 tab 隔开,ID不同元素间用逗号隔开
     public static void saveTags( ArrayList<Tag> tags,String filename) throws IOException {   
     
-        // 生成文件内容   
+    	File file = new File(filename);
+    	if (!file.exists()) {
+    	    try {
+    	        file.createNewFile();
+    	    } catch (IOException e) {
+    	        e.printStackTrace();
+    	    }
+    	}
+    	
+    	// 生成文件内容   
         String data = "";   
         for (Tag tag : tags) {   
             data += getTagString(tag) + "\n";   
@@ -225,7 +234,7 @@ public class TagDeal {
     }
     
   //返回该评论是否被标签标注(xinhanrui)
-    public static int IsIDempty(ArrayList<Tag> tags,int ID){
+    public static int isIDempty(ArrayList<Tag> tags,int ID){
         int isempty=1;
     	for (Tag tag : tags) {   
         	if(tag.haveID(ID)) {
@@ -263,7 +272,7 @@ public class TagDeal {
     }
     
     //将两个标签文件的标签类标签合并，存在tags_a中（不包括ID的ArrayList）(xinhanrui)
-    public static void TagClassMerge(ArrayList<Tag> tags_a,ArrayList<Tag> tags_b) {
+    public static void tagClassMerge(ArrayList<Tag> tags_a,ArrayList<Tag> tags_b) {
     	boolean flag;
     	for(Tag tag_b:tags_b) {
     		flag=true;
@@ -280,7 +289,7 @@ public class TagDeal {
     }
     
     //将两个标签文件的标签合并，存在tags_a中（包括ID的ArrayList）(xinhanrui)
-    public static void TagsMerge(ArrayList<Tag> tags_a,ArrayList<Tag> tags_b,int IDA,int IDB,String filename) {
+    public static void tagsMerge(ArrayList<Tag> tags_a,ArrayList<Tag> tags_b,int IDA,int IDB,String filename) {
     	ArrayList<String> idstring=getTaged(tags_b,IDB);
     	for(int i=0;i<idstring.size();i++) {
     		String[] parts = idstring.get(i).split(" ");
@@ -294,7 +303,7 @@ public class TagDeal {
     }
     
     //判断同一个评论是否在同一个标签类里标注了多个，是则返回true(xinhanrui)
-    public static boolean IsConflict(ArrayList<Tag> tags,int ID) {
+    public static boolean isConflict(ArrayList<Tag> tags,int ID) {
     	String[][] checklist=new String[1000][2];
     	int i = 0;
     	int j = 0;
