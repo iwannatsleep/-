@@ -73,8 +73,8 @@ public class TagDealTest {
 		ArrayList a=new ArrayList();a.add(2);
 		data.add(new Tag("认为涨跌","看涨",a));
 		data.add(new Tag("是否广告","是",a));
-		assertEquals(0,method.IsIDempty(data, 2));
-		assertEquals(1,method.IsIDempty(data, 3));
+		assertEquals(0,method.isIDempty(data, 2));
+		assertEquals(1,method.isIDempty(data, 3));
 	}
 
 	@Test
@@ -125,7 +125,7 @@ public class TagDealTest {
 		data2.add(new Tag("认为涨跌","看涨",d));
 		data2.add(new Tag("认为涨跌","看跌",e));
 		data2.add(new Tag("是否持股","是",f));
-		method.TagClassMerge(data1,data2);
+		method.tagClassMerge(data1,data2);
 		assertEquals("是否持股",data1.get(3).getTagClass());
 		assertEquals("是",data1.get(3).getTagName());
 	}
@@ -163,11 +163,11 @@ public class TagDealTest {
 		comments_test_list_b.add(new Comment(3,"评论4","SH600519",false,false));
 		comments_test_list_b.add(new Comment(4,"评论5","SH600519",false,false));
 		comments_test_list_b.add(new Comment(5,"评论6","SH600519",false,false));
-		int[][] idchangelist=commentsdatabank.IdChangeList(comments_test_list_a, comments_test_list_b);
-		method.TagClassMerge(data1,data2);
+		int[][] idchangelist=commentsdatabank.idChangeList(comments_test_list_a, comments_test_list_b);
+		method.tagClassMerge(data1,data2);
 		int i=0;
 		while(idchangelist[i][0]!=0) {
-			method.TagsMerge(data1,data2,idchangelist[i][0],idchangelist[i][1],"TagMerge.txt");
+			method.tagsMerge(data1,data2,idchangelist[i][0],idchangelist[i][1],"TagMerge.txt");
 			i++;
 		}
 		assertEquals(5,Integer.parseInt(data1.get(0).getID().get(4).toString()));
@@ -186,8 +186,8 @@ public class TagDealTest {
 		data1.add(new Tag("认为涨跌","看涨",a));
 		data1.add(new Tag("认为涨跌","看跌",b));
 		data1.add(new Tag("是否广告","是",c));
-		boolean flag1=method.IsConflict(data1,1);
-		boolean flag2=method.IsConflict(data1,2);
+		boolean flag1=method.isConflict(data1,1);
+		boolean flag2=method.isConflict(data1,2);
 		assertFalse(flag1);
 		assertTrue(flag2);
 	}

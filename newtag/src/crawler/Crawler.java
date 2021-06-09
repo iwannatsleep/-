@@ -43,7 +43,7 @@ public class Crawler{
     	int position_comment=0;
         String filename = "data_comments.csv"; //py爬虫后评论存在这个文件里，java项目从该文件中读取评论
         String python_code; 
-        python_code = "xueqiu_crawler\\venv\\Scripts\\python.exe xueqiu_crawler\\main.py "+symbol+" "+page; //构造执行python爬虫代码的命令
+        python_code = "crawler.exe" + " "+symbol+" "+page; //构造执行python爬虫代码的命令
         try {
         	//执行爬虫py文件进行爬取，爬取后的结果放在data_test_plus.csv
             proc = Runtime.getRuntime().exec(python_code);
@@ -55,7 +55,7 @@ public class Crawler{
         } 
     }
     
-    public void Load() throws IOException {
+    public void load() throws IOException {
     	//java从文件中读取评论
     	int i=0;
     	int position_comment=0;
@@ -66,7 +66,7 @@ public class Crawler{
         String line;
         line = reader.readLine();//从第二行评论开始读（第一行是0）
         while ((line = reader.readLine()) != null) {   
-        	if(Isnotrepeat(line)) {
+        	if(isnotrepeat(line)) {
         	comments_list.add(position_comment,new Comment(i+1,line,symbol,false,false)); //暂时输出到控制台，等comment数据类做好后直接传到list中 
         	i++;
         	position_comment++;
@@ -75,7 +75,7 @@ public class Crawler{
         reader.close();
     }
     
-    private boolean Isnotrepeat(String line) {
+    private boolean isnotrepeat(String line) {
     	for(Comment comment:comments_list) {
     		if(comment.getText().equals(line)) {
     			return false;

@@ -71,7 +71,7 @@ public class Downloading extends JFrame {
 				proc.destroy();
 				crawler=new Crawler(symbol,page);
 				try {
-					crawler.Load();
+					crawler.load();
 				} catch (IOException e3) {
 					// TODO 自动生成的 catch 块
 					e3.printStackTrace();
@@ -139,7 +139,7 @@ public class Downloading extends JFrame {
 			// TODO 自动生成的 catch 块
 			e1.printStackTrace();
 		}
-        python_code = "xueqiu_crawler\\venv\\Scripts\\python.exe xueqiu_crawler\\main.py "+symbol+" "+page; //构造执行python爬虫代码的命令
+        python_code = "crawler.exe" + " "+symbol+" "+page; //构造执行python爬虫代码的命令
         //执行爬虫py文件进行爬取，爬取后的结果放在data_test_plus.csv
         try {
 			proc = Runtime.getRuntime().exec(python_code);
@@ -161,12 +161,14 @@ public class Downloading extends JFrame {
         @Override
         public void run() {
         	int size=0;
+        	lblNewLabel.setText("初始化下载程序……");
         	try {
-				Thread.sleep(3000);
+				Thread.sleep(7000);
 			} catch (InterruptedException e1) {
 				// TODO 自动生成的 catch 块
 				e1.printStackTrace();
 			}
+        	lblNewLabel.setText("下载中……");
             for (int i=0;i<=100000;i++){
             	File file = new File("data_comments.csv");
             	size=(int) file.length();
