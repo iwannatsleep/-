@@ -27,6 +27,8 @@ import view.Main;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
 import java.awt.Color;
 import java.awt.Dimension;
 
@@ -61,7 +63,7 @@ public class MainView extends JFrame {
 		
 		//菜单栏导入选项
 		JMenu Import=new JMenu();
-		Import.setText("导入");
+		Import.setText("导入/导出");
 		Import.setForeground(Color.BLACK);
 		menuBar.add(Import);
 		//菜单栏下拉内容项,分别为"从本地文件导入"和"下载股票"
@@ -222,6 +224,17 @@ public class MainView extends JFrame {
 		MenuItem_4.setBounds(449, 10, 115, 27);
 */
 		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		        if (JOptionPane.showConfirmDialog(frame, 
+		            "在关闭程序前请将标注文件导出!\n否则将导致数据丢失!\n请问是否要退出？", "是否退出?", 
+		            JOptionPane.YES_NO_OPTION,
+		            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+		            System.exit(0);
+		        }
+		    }
+		});
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 	}
 }

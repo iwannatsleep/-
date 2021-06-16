@@ -337,6 +337,7 @@ public class TagView extends  JPanel{;
 		    			e3.printStackTrace();
 		    		}
 	        		try {
+	        			TagDeal.solveConflict(tags,(String)selectedtagcla,(String)taglist.getSelectedValue(), selectedID,"Tag.txt");
 						TagDeal.addID(tags,(String)selectedtagcla,(String)taglist.getSelectedValue(), selectedID,"Tag.txt");
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
