@@ -9,6 +9,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -68,7 +69,6 @@ public class Downloading extends JFrame {
 		Button_cancel = new JButton("取消");
 		Button_cancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				proc.destroy();
 				crawler=new Crawler(symbol,page);
 				try {
 					crawler.load();
@@ -131,8 +131,26 @@ public class Downloading extends JFrame {
     	int position_comment=0;
         String filename = "data_comments.csv"; //py爬虫后评论存在这个文件里，java项目从该文件中读取评论
         String python_code;
+        
         @Override
         public void run() {
+        	File file = new File(filename);
+        	if (!file.exists()) {
+        	    try {
+        	        file.createNewFile();
+        	    } catch (IOException e) {
+        	        e.printStackTrace();
+        	    }
+        	}
+    	    // 保存文件内容   
+    	    try {
+    	    	FileWriter writer = new FileWriter(filename); 
+				writer.write("");
+				writer.close();
+			} catch (IOException e2) {
+				// TODO 自动生成的 catch 块
+				e2.printStackTrace();
+			}   
         try {
 			Thread.sleep(500);
 		} catch (InterruptedException e1) {

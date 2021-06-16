@@ -328,6 +328,22 @@ public class TagDeal {
     	return false;
     }
     
+  //解决同一标签类标注冲突时，删除旧的(xinhanrui)
+    public static void solveConflict(ArrayList<Tag> tags,String tagclass,String tagname,int ID,String filename) {
+    	for(Tag tag : tags) {
+    		if(tag.haveID(ID)&&tag.getTagClass().equals(tagclass)&&(!tag.getTagName().equals(tagname))) {
+    			try {
+					delID(tags,tagclass,tag.getTagName(),ID,filename);
+				} catch (IOException e) {
+					// TODO 自动生成的 catch 块
+					e.printStackTrace();
+				}
+    			break;
+    		}
+        }
+    	
+    }
+    
 	public static void main(String[] args) throws IOException {
 		ArrayList<Tag> tags = new ArrayList<Tag>();
 		 //tags=readTags("Tag.txt");

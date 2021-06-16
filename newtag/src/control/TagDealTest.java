@@ -191,4 +191,22 @@ public class TagDealTest {
 		assertFalse(flag1);
 		assertTrue(flag2);
 	}
+	
+	@Test
+	//判断同一个评论是否在同一个标签类里标注了多个，是则返回true，测试
+	public void testSolveConflict() {
+		ArrayList<Tag> data1=new ArrayList<Tag>();
+		TagDeal method=new TagDeal();
+		//添加数据
+		ArrayList a=new ArrayList();a.add(0);a.add(1);a.add(2);a.add(3);
+		ArrayList b=new ArrayList();b.add(5);
+		ArrayList c=new ArrayList();c.add(0);c.add(1);c.add(2);
+		data1.add(new Tag("认为涨跌","看涨",a));
+		data1.add(new Tag("认为涨跌","看跌",b));
+		data1.add(new Tag("是否广告","是",c));
+		method.solveConflict(data1,"认为涨跌","看跌",1,"Tag.txt");
+		boolean flag2=method.isConflict(data1,2);
+		assertFalse(data1.get(0).haveID(1));
+	}
+	
 }
